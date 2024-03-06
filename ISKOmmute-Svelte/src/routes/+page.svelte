@@ -1,14 +1,13 @@
 <script>
-	let startPlaceHolder = 'Choose start point';
-	let endPlaceHolder = 'Choose end point';
+	let startPlaceHolder = 'Choose starting point';
+	let endPlaceHolder = 'Choose destination';
 
 	let startPlace = '';
 	let endPlace = '';
-	let errorMessage = '';
 
 	function handleClick() {
 		if (!startPlace || !endPlace) {
-            errorMessage = 'Please select both start and end places.';
+            window.alert('Please select both starting point and destination.');
         }
 	}
 </script>
@@ -46,7 +45,7 @@
 		<option value="IMath">Institute of Mathematics</option>
 	</select>
 
-	<button class="btn btn-xl variant-filled">Generate Route</button>
+	<button class="btn btn-xl variant-filled" on:click={handleClick}>Generate Route</button>
 
 
 </div>
