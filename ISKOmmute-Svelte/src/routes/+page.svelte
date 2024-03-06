@@ -1,6 +1,16 @@
 <script>
 	let startPlaceHolder = 'Choose start point';
 	let endPlaceHolder = 'Choose end point';
+
+	let startPlace = '';
+	let endPlace = '';
+	let errorMessage = '';
+
+	function handleClick() {
+		if (!startPlace || !endPlace) {
+            errorMessage = 'Please select both start and end places.';
+        }
+	}
 </script>
 
 <div class="container p-10 space-y-4 flex flex-col items-center h-screen">
@@ -21,7 +31,7 @@
 		<option value="IMath">Institute of Mathematics</option>
 	</select>
 
-	<select class="select">
+	<select class="select" bind:value={startPlace}>
 		{#if endPlaceHolder}
 			<option value="" disabled selected>{endPlaceHolder}</option>
 		{/if}
@@ -35,6 +45,8 @@
 		<option value="Gyud">Gyud Food Hub</option>
 		<option value="IMath">Institute of Mathematics</option>
 	</select>
+
+	<button class="btn btn-xl variant-filled">Generate Route</button>
 
 
 </div>
