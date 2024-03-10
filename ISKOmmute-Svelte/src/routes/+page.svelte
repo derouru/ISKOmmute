@@ -8,14 +8,16 @@
 	function handleClick() {
 		if (!startPlace || !endPlace) {
             window.alert('Please select both starting point and destination.');
-        }
+        } else {
+			window.alert('Getting route from ' + startPlace + ' to ' + endPlace + '...');
+		}
 	}
 </script>
 
 <div class="container p-10 space-y-4 flex flex-col items-center h-screen">
 	<h1>Welcome to ISKOmmute!</h1>
 
-	<select class="select">
+	<select class="select" bind:value={startPlace}>
 		{#if startPlaceHolder}
 			<option value="" disabled selected>{startPlaceHolder}</option>
 		{/if}
@@ -30,7 +32,7 @@
 		<option value="IMath">Institute of Mathematics</option>
 	</select>
 
-	<select class="select" bind:value={startPlace}>
+	<select class="select" bind:value={endPlace}>
 		{#if endPlaceHolder}
 			<option value="" disabled selected>{endPlaceHolder}</option>
 		{/if}
