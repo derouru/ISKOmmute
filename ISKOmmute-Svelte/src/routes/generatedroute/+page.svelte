@@ -6,16 +6,16 @@
 	let endPlace = '';
 
 	let options = [
-        { value: "AECH", label: "Alumni Engineers Centennial Hall" },
-        { value: "AngTBA", label: "Ang Bahay ng Alumni" },
-        { value: "A2", label: "Area 2" },
-        { value: "AIT", label: "Asian Institute of Tourism" },
-        { value: "Benitez", label: "Benitez Hall" },
-        { value: "Carillon", label: "Carillon Tower" },
-        { value: "CoTRL", label: "Church of the Risen Lord" },
-        { value: "Gyud", label: "Gyud Food Hub" },
-        { value: "IMath", label: "Institute of Mathematics" }
-    ]
+		{ value: "Alumni Engineers Centennial Hall", label: "Alumni Engineers Centennial Hall" },
+		{ value: "Ang Bahay ng Alumni", label: "Ang Bahay ng Alumni" },
+		{ value: "Area 2", label: "Area 2" },
+		{ value: "Asian Institute of Tourism", label: "Asian Institute of Tourism" },
+		{ value: "Benitez Hall", label: "Benitez Hall" },
+		{ value: "Carillon Tower", label: "Carillon Tower" },
+		{ value: "Church of the Risen Lord", label: "Church of the Risen Lord" },
+		{ value: "Gyud Food Hub", label: "Gyud Food Hub" },
+		{ value: "Institute of Mathematics", label: "Institute of Mathematics" }
+	]
 
 	function handleClick() {
 		if (!startPlace || !endPlace) {
