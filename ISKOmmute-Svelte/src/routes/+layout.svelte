@@ -58,3 +58,10 @@
 	<!-- Page Route Content -->
 	<slot />
 </AppShell>
+
+<style>
+    :global(.skeleton-drawer) {
+        height: 100vh;
+        overflow: auto;
+    }
+</style>
