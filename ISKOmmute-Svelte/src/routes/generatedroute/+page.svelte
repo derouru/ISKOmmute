@@ -29,7 +29,7 @@
 </script>
 
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">
-	<h1>Where do you want to go?</h1>
+	<h1>Placeholder Page for /generatedroute</h1>
 
 	<select class="select" bind:value={startPlace}>
 		{#if startPlaceHolder}
