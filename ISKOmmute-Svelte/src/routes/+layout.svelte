@@ -3,7 +3,7 @@
 	import { AppShell, AppBar, initializeStores, Drawer, getDrawerStore } from '@skeletonlabs/skeleton';
 	import { onMount, onDestroy } from 'svelte';
 	import Navigation from '$lib/Navigation/Navigation.svelte';
-	import { writable } from 'svelte/store';
+	import { splashScreenStore } from '$lib/stores';
 
 	initializeStores();
 
@@ -16,9 +16,6 @@
 	function drawerClose(): void {
 		drawerStore.close();
 	}
-
-	// Create a store for the splash screen state
-	export const splashScreenStore = writable(true);
 
 	// Subscribe to the store and update the local state when the store changes
 	let showSplash;
@@ -39,9 +36,9 @@
 
 {#if showSplash}
 	<!-- Splash screen -->
-    <div class="splash-screen">
-        <h1>Loading...</h1>
-    </div>
+    <div class="splash-screen" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+		<h1>Loading...</h1>
+	</div>
 {:else}
 	<Drawer>
 		<div class="flex items-center">
