@@ -1,37 +1,43 @@
 <script lang="ts">
-	import '../app.postcss';
-	import { AppShell, AppBar, initializeStores, Drawer, getDrawerStore } from '@skeletonlabs/skeleton';
-	import { onMount, onDestroy } from 'svelte';
-	import Navigation from '$lib/Navigation/Navigation.svelte';
-	import { splashScreenStore } from '$lib/stores';
+    import '../app.postcss';
+    import { AppShell, AppBar, initializeStores, Drawer, getDrawerStore } from '@skeletonlabs/skeleton';
+    import { onMount, onDestroy } from 'svelte';
+    import Navigation from '$lib/Navigation/Navigation.svelte';
+    import { splashScreenStore } from '$lib/stores';
+    import { fly } from 'svelte/transition';
 
-	initializeStores();
+    // Exported data
+    export let data;
 
-	const drawerStore = getDrawerStore();
+    // Initialize stores
+    initializeStores();
+    const drawerStore = getDrawerStore();
 
-	function drawerOpen(): void {
-		drawerStore.open({});
-	}
+    // Drawer functions
+    function drawerOpen(): void {
+        drawerStore.open({});
+    }
 
-	function drawerClose(): void {
-		drawerStore.close();
-	}
+    function drawerClose(): void {
+        drawerStore.close();
+    }
 
-	// Subscribe to the store and update the local state when the store changes
-	let showSplash: boolean;
-	const unsubscribe = splashScreenStore.subscribe(value => {
-		showSplash = value;
-	});
+    // Splash screen state
+    let showSplash: boolean;
+    const unsubscribe = splashScreenStore.subscribe(value => {
+        showSplash = value;
+    });
 
-	onMount(async () => {
-		setTimeout(() => {
-			splashScreenStore.set(false);
-		}, 3000);
-	});
+    // Lifecycle hooks
+    onMount(async () => {
+        setTimeout(() => {
+            splashScreenStore.set(false);
+        }, 3000);
+    });
 
-	onDestroy(() => {
-		unsubscribe();
-	});
+    onDestroy(() => {
+        unsubscribe();
+    });
 </script>
 
 {#if showSplash}
@@ -82,9 +88,17 @@
 		</svelte:fragment>
 
 		<!-- Page Route Content -->
-		<slot />
+		{#key data.url}
+			<div 
+				in:fly={{ x: -200, duration: 400, delay: 400}}
+				out:fly={{ x: 200, duration: 400}}
+			>
+				<slot />
+			</div>
+		{/key}
 	</AppShell>
 {/if}
+
 <style>
     :global(.skeleton-drawer) {
         height: 100vh;
