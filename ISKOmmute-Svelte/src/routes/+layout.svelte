@@ -18,7 +18,7 @@
 	}
 
 	// Subscribe to the store and update the local state when the store changes
-	let showSplash;
+	let showSplash: boolean;
 	const unsubscribe = splashScreenStore.subscribe(value => {
 		showSplash = value;
 	});
@@ -41,11 +41,13 @@
 	</div>
 {:else}
 	<Drawer>
-		<div class="flex items-center">
-			<svg viewBox="0 0 50 80" class="fill-token w-4 h-4 cursor-pointer" on:click={drawerClose}>
-				<polygon points="45.63,75.8 0,40 45.63,4.2 50,8.6 9.37,40 50,71.4 "/>
-			</svg>
-			<h2 class="p-4">More Options</h2>
+		<div class="flex items-center p-4"> 
+			<button class="fill-token w-3 h-3 cursor-pointer mr-4" on:click={drawerClose} aria-label="Close Drawer">
+				<svg viewBox="0 0 50 80">
+					<polygon points="45.63,75.8 0,40 45.63,4.2 50,8.6 9.37,40 50,71.4 "/>
+				</svg>
+			</button>
+			<h2>More Options</h2>
 		</div>
 		<hr />
 		<Navigation />
