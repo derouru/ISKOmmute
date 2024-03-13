@@ -42,8 +42,8 @@
 
 {#if showSplash}
 	<!-- Splash screen -->
-    <div class="splash-screen" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-		<h1>Welcome to ISKOmmute!</h1>
+    <div class="splash-screen" style="display: flex; justify-content: center; height: 100vh;">
+		<h1 class="welcome-header">Welcome to ISKOmmute!</h1>
 	</div>
 {:else}
 	<div in:fade={{ duration: 400 }}>
@@ -106,4 +106,19 @@
         height: 100vh;
         overflow: auto;
     }
+
+	.splash-screen {
+		background-image: url('$lib/assets/splashscreen.png');
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	.welcome-header {
+		font-size: 2rem;
+		color: white;
+		text-align: center;
+		margin-top: 50vh;
+		transform: translateY(-70%);
+		line-height: 1.5;
+	}
 </style>
