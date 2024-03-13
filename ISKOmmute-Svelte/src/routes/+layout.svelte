@@ -94,7 +94,9 @@
 					in:fly={{ x: -200, duration: 400, delay: 400}}
 					out:fly={{ x: 200, duration: 400}}
 				>
-					<slot />
+					<div class="slot-content">
+						<slot />
+					</div>
 				</div>
 			{/key}
 		</AppShell>
@@ -120,5 +122,9 @@
 		margin-top: 50vh;
 		transform: translateY(-70%);
 		line-height: 1.5;
+	}
+
+	.slot-content {
+		transform: translateY(-10%);
 	}
 </style>
