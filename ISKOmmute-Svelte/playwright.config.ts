@@ -1,6 +1,9 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
+	// Run tests in serial
+	fullyParallel: true,
+
 	webServer: {
 		command: 'npm run build && npm run preview',
 		port: 4173
