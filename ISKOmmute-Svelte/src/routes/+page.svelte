@@ -35,7 +35,7 @@
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">
 	<h1>Where do you want to go?</h1>
 
-	<select class="select" bind:value={startPlace}>
+	<select id="dropdown1" class="select" bind:value={startPlace}>
 		{#if startPlaceHolder}
         	<option value="" disabled selected>{startPlaceHolder}</option>
     	{/if}
@@ -44,7 +44,7 @@
 		{/each}
 	</select>
 
-	<select class="select" bind:value={endPlace}>
+	<select id="dropdown2" class="select" bind:value={endPlace}>
 		{#if endPlaceHolder}
         	<option value="" disabled selected>{endPlaceHolder}</option>
     	{/if}
@@ -53,5 +53,5 @@
 		{/each}
 	</select>
 
-	<button class="btn btn-xl variant-filled" on:click={handleClick}>Generate Route</button>
+	<button id="generateBtn" class="btn btn-xl variant-filled" on:click={handleClick}>Generate Route</button>
 </div>
