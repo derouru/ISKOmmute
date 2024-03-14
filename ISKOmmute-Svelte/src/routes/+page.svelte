@@ -35,7 +35,7 @@
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">
 	<h1>Where do you want to go?</h1>
 
-	<select class="select" bind:value={startPlace}>
+	<select class="select" bind:value={startPlace} id="select-start">
 		{#if startPlaceHolder}
         	<option value="" disabled selected>{startPlaceHolder}</option>
     	{/if}
@@ -44,7 +44,7 @@
 		{/each}
 	</select>
 
-	<select class="select" bind:value={endPlace}>
+	<select class="select" bind:value={endPlace} id="select-dest">
 		{#if endPlaceHolder}
         	<option value="" disabled selected>{endPlaceHolder}</option>
     	{/if}
