@@ -53,5 +53,5 @@
 		{/each}
 	</select>
 
-	<button class="btn btn-xl variant-filled" on:click={handleClick}>Generate Route</button>
+	<button class="btn btn-xl variant-filled" id="btn-genroute" on:click={handleClick}>Generate Route</button>
 </div>
