@@ -8,15 +8,12 @@
 	let endPlace = '';
 
 	let options = [
-		{ value: "Alumni Engineers Centennial Hall", label: "Alumni Engineers Centennial Hall" },
-		{ value: "Ang Bahay ng Alumni", label: "Ang Bahay ng Alumni" },
-		{ value: "Area 2", label: "Area 2" },
-		{ value: "Asian Institute of Tourism", label: "Asian Institute of Tourism" },
-		{ value: "Benitez Hall", label: "Benitez Hall" },
-		{ value: "Carillon Tower", label: "Carillon Tower" },
-		{ value: "Church of the Risen Lord", label: "Church of the Risen Lord" },
-		{ value: "Gyud Food Hub", label: "Gyud Food Hub" },
-		{ value: "Institute of Mathematics", label: "Institute of Mathematics" }
+		{ value: "AECH", label: "Alumni Engineers Centennial Hall" },
+		{ value: "CSLib", label: "College of Science Library"},
+		{ value: "EEEI", label: "Electrical and Electronics Engineering Institute"},
+		{ value: "IMath", label: "Institute of Mathematics" },
+		{ value: "IESM", label: "Institute of Environmental Science and Meterology" },
+		{ value: "NIGS", label: "National Institute of Geological Sciences" }
 	]
 
 	function handleClick() {
