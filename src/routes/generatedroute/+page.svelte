@@ -255,11 +255,14 @@ function createMap() {
     margin-top: 5%;
     margin-left: 5%;
     color: blue;
+    
   }
   #doneBtn {
     position: absolute;
     margin-top: 5%;
-    margin-left: 85%;
+    margin-left: 75%;
     color: blue;
+    font-size: 1em;
+    padding: 0.5em 1em;
   }
 </style>
