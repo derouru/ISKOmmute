@@ -1,6 +1,7 @@
 import { g as getContext, s as setContext, a as get_store_value, c as create_ssr_component, e as escape, b as add_attribute, d as compute_slots, f as add_styles, h as subscribe, i as createEventDispatcher, o as onDestroy, v as validate_component } from "../../chunks/ssr.js";
 import { w as writable, r as readable } from "../../chunks/index.js";
 import { p as page } from "../../chunks/stores.js";
+import { s as splashScreenStore } from "../../chunks/stores2.js";
 const DRAWER_STORE_KEY = "drawerStore";
 function getDrawerStore() {
   const drawerStore = getContext(DRAWER_STORE_KEY);
@@ -436,7 +437,6 @@ const Navigation = create_ssr_component(($$result, $$props, $$bindings, slots) =
   $$unsubscribe_page();
   return `<nav class="list-nav p-4"><ul><li><a href="/"${add_attribute("this", links["/"], 0)} data-svelte-h="svelte-m8h6gf">Home</a></li> <li><a href="/settings"${add_attribute("this", links["/settings"], 0)} data-svelte-h="svelte-1245tnl">Settings</a></li> <li><a href="/tos"${add_attribute("this", links["/tos"], 0)} data-svelte-h="svelte-163dxl7">Terms of Service</a></li> <li><a href="/privacypolicy"${add_attribute("this", links["/privacypolicy"], 0)} data-svelte-h="svelte-yne7ia">Privacy Policy</a></li> <li><a href="/help"${add_attribute("this", links["/help"], 0)} data-svelte-h="svelte-1ux8m87">Help</a></li></ul></nav>`;
 });
-const splashScreenStore = writable(true);
 const css = {
   code: ".skeleton-drawer{height:100vh;overflow:auto}.splash-screen.svelte-15p47qt{background-image:url('$lib/assets/splashscreen.png');background-position:center;background-repeat:no-repeat}.welcome-header.svelte-15p47qt{font-size:2rem;color:white;text-align:center;margin-top:50vh;transform:translateY(-70%);line-height:1.5}.slot-content.svelte-15p47qt{transform:translateY(-10%)}",
   map: null
