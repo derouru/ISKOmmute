@@ -1,5 +1,7 @@
 <script>
 	import { goto } from "$app/navigation";
+	import { startValue } from '$lib/stores';
+  	import { endValue } from '$lib/stores';
 
 	let startPlaceHolder = 'Choose starting point';
 	let endPlaceHolder = 'Choose destination';
@@ -23,6 +25,8 @@
 			window.alert('Starting point and destination cannot be the same.');
 		} else {
 			window.alert('Getting route from ' + startPlace + ' to ' + endPlace + '...');
+			startValue.set(startPlace);
+			endValue.set(endPlace);
 			const url = `/generatedroute`;
 			goto(url);
 		}
