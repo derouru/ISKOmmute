@@ -1,5 +1,6 @@
 
 <a id="back_button" href="../">Back</a>
+<button id="doneBtn" class="btn btn-xl variant-filled" on:click={handleClick}>Done</button>
 <div id="map" bind:this={mapElement}></div>
 
 <script>
@@ -7,7 +8,9 @@
   import mapboxgl from "mapbox-gl";
 
 // - - - - - - - SETUP MAP PROPERTIES - - - - - - -
-  const start = [121.069, 14.649];  //TRY DEFINING ARBITRARY START POINT
+  let start = [ 121.068689757108132, 14.648708168263134 ];  //TRY DEFINING ARBITRARY START POINT FOR NAVIGATION
+  let end = [ 121.070964437966168, 14.648304820957335 ]; //TRY DEFINING ARBITRARY END POINT FOR NAVIGATION
+
   let mapElement;
   let map = null;
   let accessToken = 'pk.eyJ1IjoiamJ2aWNlcnJhIiwiYSI6ImNsdjBudzkwbDBmNW0yaXZwamhodDFsZTQifQ.M2wEKMepxK2f0le_AJ4Xmw';
@@ -23,11 +26,64 @@
         [121.067833, 14.647044], // SouthWest coordinates
         [121.072471, 14.650501] // NorthEast coordinates
     ];
+  
+  function handleClick() {
+			window.alert('You have arrived at your destination.');
+			const url = `../`;
+			goto(url);
+	}
 
 // - - - - - - - MOUNT MAP - - - - - - - 
   onMount(() => {
   createMap();
   });
+
+// GET ROUTE FUNCTION FOR DIRECTIONS REQUEST
+// create a function to make a directions request
+  async function getRoute(start, end) {
+  // make a directions request using cycling profile
+  // an arbitrary start will always be the same
+  // only the end or destination will change
+  const query = await fetch(
+    `https://api.mapbox.com/directions/v5/mapbox/walking/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${accessToken}`,
+    { method: 'GET' }
+  );
+  const json = await query.json();
+  const data = json.routes[0];
+  const route = data.geometry.coordinates;
+  const geojson = {
+    type: 'Feature',
+    properties: {},
+    geometry: {
+      type: 'LineString',
+      coordinates: route
+    }
+  };
+  // if the route already exists on the map, we'll reset it using setData
+  if (map.getSource('route')) {
+    map.getSource('route').setData(geojson);
+  }
+  // otherwise, we'll make a new request
+  else {
+    map.addLayer({
+      id: 'route',
+      type: 'line',
+      source: {
+        type: 'geojson',
+        data: geojson
+      },
+      layout: {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': '#ff0f0f',
+        'line-width': 5,
+        'line-opacity': 0.75
+      }
+    });
+  }
+}
 
 // - - - - - - - SETUP MAP - - - - - - - 
 function createMap() {
@@ -54,6 +110,7 @@ function createMap() {
     //  });
 
     // Note: Could add more safety for token
+    // Note: Could fix custom map
     // ADD BUILDINGS AS A SOURCE, THEN ADD AS A LAYER
     map.addSource('buildings', {
         type: 'vector',
@@ -102,9 +159,41 @@ function createMap() {
     })
     // DISABLE MAP ZOOM
     map.scrollZoom.disable();
-    });
-  }
 
+    // REQUEST FOR DIRECTIONS
+    getRoute(start, end);
+    // ADD STARTING POINT AS A LAYER IN THE MAPP
+    map.addLayer({
+      id: 'point',
+      type: 'circle',
+      source: {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'Point',
+                coordinates: start
+              }
+            }
+          ]
+        }
+      },
+      paint: {
+        'circle-radius': 10,
+        'circle-color': '#ff0f0f'
+      }
+    });
+
+  });
+  // - - - - - - - MAP ON LOAD END - - - - - - -  
+  // - - - - - - - MAP ON LOAD ASYNC - - - - - - -  
+
+  // - - - - - - - MAP ON LOAD ASYNC END- - - - - - -  
+  }
 </script>
 
 <style>
@@ -117,6 +206,12 @@ function createMap() {
     position: absolute;
     margin-top: 5%;
     margin-left: 5%;
+    color: blue;
+  }
+  #doneBtn {
+    position: absolute;
+    margin-top: 5%;
+    margin-left: 85%;
     color: blue;
   }
 </style>
