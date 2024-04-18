@@ -5,7 +5,7 @@ const config: PlaywrightTestConfig = {
 	fullyParallel: false,
 
 	// Reporter in html
-	reporter: 'html',
+	reporter: [['html', { outputFolder: 'playwright-report' }]],
 	
 	webServer: {
 		command: 'npm run build && npm run preview',
