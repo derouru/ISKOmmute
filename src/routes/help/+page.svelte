@@ -2,8 +2,12 @@
 	/* insert relevant script here in the future */
 </script>
 
+<head>
+    <title>ISKOmmute FAQ and Help</title>
+</head>
+
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">
-	<h1>Help Page for Iskommute</h1>
+	<h1>ISKOmmute FAQ and Help</h1>
     <p>Welcome to Iskommute! Below are some frequently asked questions and helpful tips to enhance your experience with our web-based application:</p>
 
     <h2>1. What is Iskommute?</h2>
