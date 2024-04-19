@@ -105,7 +105,7 @@ test('Case: Different start and destination', async ({ page }) => {
   
 	// Select an option from the first dropdown menu ONLY
 	await page.selectOption('#select-start', { label: 'Alumni Engineers Centennial Hall' });
-	await page.selectOption('#select-dest', { label: 'Area 2' });
+	await page.selectOption('#select-dest', { label: 'Institute of Mathematics' });
   
 	// Click the "Generate Route" button
 	await page.locator('button:text("Generate Route")').click();
@@ -116,7 +116,7 @@ test('Case: Different start and destination', async ({ page }) => {
 		// is an alert?
 		expect(myAlert.type()).toContain("alert")
 		// contains a certain text?
-		expect(myAlert.message()).toContain("Getting route from Alumni Engineers Centennial Hall to Area 2...")
+		expect(myAlert.message()).toContain("Getting route from AECH to IMath...")
 		await myAlert.accept()
 	})
 	await page.waitForTimeout(3000);
