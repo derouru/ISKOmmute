@@ -3,13 +3,11 @@
 </script>
 
 <head>
-	<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy for Iskommute</title>
+    <title>Iskommute Privacy Policy</title>
 </head>
 
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">
-	<h1>Privacy Policy for Iskommute</h1>
+	<h1>Iskommute Privacy Policy</h1>
     <p>Thank you for using Iskommute! This Privacy Policy explains how we collect, use, and disclose information about you when you use our services, including the Iskommute website and mobile application.</p>
 
     <h2>1. Information We Collect</h2>
