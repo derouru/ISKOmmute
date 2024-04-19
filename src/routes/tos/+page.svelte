@@ -3,13 +3,11 @@
 </script>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service</title>
+    <title>Iskommute Terms of Service</title>
 </head>
 
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">
-	<h1>Terms of Service for Iskommute</h1>
+	<h1>Iskommute Terms of Service</h1>
     <p>Welcome to Iskommute! These Terms of Service ("Terms") govern your use of Iskommute's web-based application and services. By accessing or using Iskommute, you agree to these Terms.</p>
 
     <h2>1. Use of Iskommute</h2>
