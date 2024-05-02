@@ -28,6 +28,7 @@
 		endPoint = value;
 	});
   // - - - - - - - DETERMINE START AND END BASED ON STRING VALUES FROM DROPDOWN MENU - - - - - - -
+  // Can improve on this by storing longitude and latitude data to somewhere, instead of direct hardcoding
   if (startPoint === 'AECH') {
      start = [ 121.068689757108132, 14.648708168263134 ];
   } else if (startPoint === 'CSLib') {
@@ -70,10 +71,10 @@
   };
 
   // for setting max bounds when panning
-  const bounds = [
-        [121.067833, 14.647044], // SouthWest coordinates
-        [121.072471, 14.650501] // NorthEast coordinates
-    ];
+  //const bounds = [
+  //      [121.067833, 14.647044], // SouthWest coordinates
+  //      [121.072471, 14.650501] // NorthEast coordinates
+  //  ];
   
   function handleClick() {
 			window.alert('You have arrived at your destination.');
@@ -89,7 +90,7 @@
 // GET ROUTE FUNCTION FOR DIRECTIONS REQUEST
 // create a function to make a directions request
   async function getRoute(start, end) {
-  // make a directions request using cycling profile
+  // make a directions request using walking profile
   // an arbitrary start will always be the same
   // only the end or destination will change
   const query = await fetch(
@@ -141,7 +142,7 @@ function createMap() {
     style: mapStyle,
     center: [viewState.longitude, viewState.latitude],
     zoom: viewState.zoom,
-    maxBounds: bounds
+    //maxBounds: bounds
   });
   // - - - - - - - ADD MAP LAYERS UPON LOADING - - - - - - - 
   map.on('load', function() {
@@ -210,7 +211,7 @@ function createMap() {
 
     // REQUEST FOR DIRECTIONS
     getRoute(start, end);
-    // ADD STARTING POINT AS A LAYER IN THE MAPP
+    // ADD STARTING POINT AS A LAYER IN THE MAP
     map.addLayer({
       id: 'point',
       type: 'circle',
@@ -235,10 +236,76 @@ function createMap() {
         'circle-color': '#ff0f0f'
       }
     });
+  // CAN ADD MORE FEATURES UPON LOADING HERE
 
   });
   // - - - - - - - MAP ON LOAD END - - - - - - -  
   // - - - - - - - MAP ON LOAD ASYNC - - - - - - -  
+  map.on('load', async () => {
+        // GET YOUR CURRENT LOCATION
+        const geojson = await getLocation();
+        // ADD YOUR CURRENT LOCATION AS A SOURCE
+        map.addSource('myPosition', {
+            type: 'geojson',
+            data: geojson
+        });
+        // ADD POINT AS A LAYER ON THE MAP
+        map.addLayer({
+            'id': 'myPosition',
+            'type': 'circle',
+            'source': 'myPosition',
+            paint: {
+              'circle-radius': 10,
+              'circle-color': '#ff0f0f'
+            }
+        });
+
+        // UPDATE CURRENT LOCATION SOURCE EVERY 2 SECONDS
+        const updateSource = setInterval(async () => {
+            const geojson = await getLocation(updateSource);
+            map.getSource('myPosition').setData(geojson);
+        }, 2000);
+
+        // GET CURRENT POSITION VIA NAVIGATOR
+        function getCurrentPosition() {
+          return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          });
+        }
+      
+        // GET LOCATION FUNCTION
+        async function getLocation(updateSource) {
+            // TRY SECTION
+            try {
+                // GET CURRENT POSITION
+                const position = await getCurrentPosition();
+                const { latitude, longitude } = position.coords;
+                // FLY TO YOUR CURRENT POSITION
+                map.flyTo({
+                    center: [longitude, latitude],
+                    speed: 1,
+                    zoom: 18.3
+                });
+                // RETURN YOUR CURRENT POSITION AS A GEOJSON
+                return {
+                    'type': 'FeatureCollection',
+                    'features': [
+                        {
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': 'Point',
+                                'coordinates': [longitude, latitude]
+                            }
+                        }
+                    ]
+                };
+            // CATCH SECTION
+            } catch (err) {
+                if (updateSource) clearInterval(updateSource);
+                throw new Error(err);
+            }
+        }
+  });
 
   // - - - - - - - MAP ON LOAD ASYNC END- - - - - - -  
   }
