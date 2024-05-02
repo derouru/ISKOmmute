@@ -3,8 +3,8 @@
 	import { startValue } from '$lib/stores';
   	import { endValue } from '$lib/stores';
 
-	let startPlaceHolder = 'Choose starting point';
-	let endPlaceHolder = 'Choose destination';
+	let startPlaceHolder = 'Choose starting point...';
+	let endPlaceHolder = 'Choose destination...';
 
 	let startPlace = '';
 	let endPlace = '';
@@ -34,7 +34,7 @@
 </script>
 
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">
-	<h1>Where do you want to go?</h1>
+	<h1 class="wdywtg-text">Where do you want to go?</h1>
 
 	<select id="select-start" class="select" bind:value={startPlace}>
 		{#if startPlaceHolder}
@@ -54,5 +54,38 @@
 		{/each}
 	</select>
 
-	<button id="generateBtn" class="btn btn-xl variant-filled" on:click={handleClick}>Generate Route</button>
+	<button id="generateBtn" class="btn btn-xl variant-filled generate-route-btn" on:click={handleClick}>Generate Route</button>
 </div>
+
+<style>
+	.wdywtg-text {
+		font-size: 1.4rem;
+		text-align: center;
+		font-weight: 700;
+		/* color: #9C293E; */
+		margin-bottom: 1.8rem;
+	}
+
+	#generateBtn {
+		font-size: 1.4rem;
+		text-align: center;
+		font-weight: 600;
+		background-color: #9C293E;
+		color: white;
+		margin-top: 1.8rem;
+	}
+
+	.generate-route-btn:hover {
+		background-color: #800000;
+	}
+
+	.select {
+		border-color: #979797;
+		background-color: #F2F2F2;
+		text-align: center;
+		font-weight: 600;
+		color: #979797;
+		border-radius: 20px;
+	}
+
+</style>
