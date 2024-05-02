@@ -435,10 +435,10 @@ const Navigation = create_ssr_component(($$result, $$props, $$bindings, slots) =
     }
   }
   $$unsubscribe_page();
-  return `<nav class="list-nav p-4"><ul><li><a href="/"${add_attribute("this", links["/"], 0)} data-svelte-h="svelte-m8h6gf">Home</a></li> <li><a href="/settings"${add_attribute("this", links["/settings"], 0)} data-svelte-h="svelte-1245tnl">Settings</a></li> <li><a href="/tos"${add_attribute("this", links["/tos"], 0)} data-svelte-h="svelte-163dxl7">Terms of Service</a></li> <li><a href="/privacypolicy"${add_attribute("this", links["/privacypolicy"], 0)} data-svelte-h="svelte-yne7ia">Privacy Policy</a></li> <li><a href="/help"${add_attribute("this", links["/help"], 0)} data-svelte-h="svelte-1ux8m87">Help</a></li></ul></nav>`;
+  return `<nav class="list-nav p-4 font-bold"><ul><li><a href="/"${add_attribute("this", links["/"], 0)} data-svelte-h="svelte-m8h6gf">Home</a></li> <li><a href="/settings"${add_attribute("this", links["/settings"], 0)} data-svelte-h="svelte-1245tnl">Settings</a></li> <li><a href="/tos"${add_attribute("this", links["/tos"], 0)} data-svelte-h="svelte-163dxl7">Terms of Service</a></li> <li><a href="/privacypolicy"${add_attribute("this", links["/privacypolicy"], 0)} data-svelte-h="svelte-yne7ia">Privacy Policy</a></li> <li><a href="/help"${add_attribute("this", links["/help"], 0)} data-svelte-h="svelte-1ux8m87">Help</a></li> <li><a href="/feedback"${add_attribute("this", links["/feedback"], 0)} data-svelte-h="svelte-5ar2yn">Feedback</a></li></ul></nav>`;
 });
 const css = {
-  code: ".skeleton-drawer{height:100vh;overflow:auto}.splash-screen.svelte-15p47qt{background-image:url('$lib/assets/splashscreen.png');background-position:center;background-repeat:no-repeat}.welcome-header.svelte-15p47qt{font-size:2rem;color:white;text-align:center;margin-top:50vh;transform:translateY(-70%);line-height:1.5}.slot-content.svelte-15p47qt{transform:translateY(-10%)}",
+  code: ".skeleton-drawer{height:100vh;overflow:auto}.splash-screen.svelte-152netd{background-image:url('$lib/assets/splashscreen.png');background-position:center;background-repeat:no-repeat}.welcome-header.svelte-152netd{font-size:2rem;text-align:center;margin-top:45vh;transform:translateY(-70%);line-height:1.5;font-weight:bold;padding:25px}.slot-content.svelte-152netd{transform:translateY(-10%)}.hamburger.svelte-152netd{fill:#979797}",
   map: null
 };
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -455,9 +455,9 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   if ($$props.data === void 0 && $$bindings.data && data !== void 0)
     $$bindings.data(data);
   $$result.css.add(css);
-  return `${showSplash ? ` <div class="splash-screen svelte-15p47qt" style="display: flex; justify-content: center; height: 100vh;" data-svelte-h="svelte-10rjtv5"><h1 class="welcome-header svelte-15p47qt">Welcome to ISKOmmute!</h1></div>` : `<div>${validate_component(Drawer, "Drawer").$$render($$result, {}, {}, {
+  return `${showSplash ? ` <div class="splash-screen svelte-152netd" style="display: flex; justify-content: center; height: 100vh;" data-svelte-h="svelte-10rjtv5"><h1 class="welcome-header svelte-152netd">Welcome to ISKOmmute!</h1></div>` : `<div>${validate_component(Drawer, "Drawer").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="flex items-center p-4"><button class="fill-token w-3 h-3 cursor-pointer mr-4" aria-label="Close Drawer" data-svelte-h="svelte-17pu0w1"><svg viewBox="0 0 50 80"><polygon points="45.63,75.8 0,40 45.63,4.2 50,8.6 9.37,40 50,71.4 "></polygon></svg></button> <h2 data-svelte-h="svelte-9ymvyh">More Options</h2></div> <hr> ${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}`;
+      return `<div class="flex items-center p-4"><button class="fill-token w-3 h-3 cursor-pointer mr-4" aria-label="Close Drawer" data-svelte-h="svelte-17pu0w1"><svg viewBox="0 0 50 80"><polygon points="45.63,75.8 0,40 45.63,4.2 50,8.6 9.37,40 50,71.4 "></polygon></svg></button> <h2 class="font-bold" data-svelte-h="svelte-q8t421">More Options</h2></div> <hr> ${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}`;
     }
   })}  ${validate_component(AppShell, "AppShell").$$render(
     $$result,
@@ -472,12 +472,12 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       header: () => {
         return ` ${validate_component(AppBar, "AppBar").$$render($$result, {}, {}, {
           lead: () => {
-            return `<div class="flex items-center"><button class="lg:hidden btn btn-sm mr-4" data-svelte-h="svelte-nwt01a"><span><svg viewBox="0 0 100 80" class="fill-token w-4 h-4"><rect width="100" height="20"></rect><rect y="30" width="100" height="20"></rect><rect y="60" width="100" height="20"></rect></svg></span></button> <strong class="text-xl uppercase" data-svelte-h="svelte-qpd0z">ISKOmmute</strong></div>`;
+            return `<div class="flex items-center"><button class="lg:hidden btn btn-sm mr-4" data-svelte-h="svelte-h2l20o"><span><svg viewBox="0 0 100 80" class="fill-token w-4 h-4"><rect width="100" height="20" class="hamburger svelte-152netd"></rect><rect y="30" width="100" height="20" class="hamburger svelte-152netd"></rect><rect y="60" width="100" height="20" class="hamburger svelte-152netd"></rect></svg></span></button> <strong class="text-xl uppercase" data-svelte-h="svelte-qpd0z">ISKOmmute</strong></div>`;
           }
         })} `;
       },
       default: () => {
-        return `  <div><div class="slot-content svelte-15p47qt">${slots.default ? slots.default({}) : ``}</div></div>`;
+        return `  <div><div class="slot-content svelte-152netd">${slots.default ? slots.default({}) : ``}</div></div>`;
       }
     }
   )}</div>`}`;

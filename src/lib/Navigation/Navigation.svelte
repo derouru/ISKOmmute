@@ -27,6 +27,7 @@
         <li><a href="/tos" on:click={drawerClose} bind:this={links['/tos']}>Terms of Service</a></li>
         <li><a href="/privacypolicy" on:click={drawerClose} bind:this={links['/privacypolicy']}>Privacy Policy</a></li>
         <li><a href="/help" on:click={drawerClose} bind:this={links['/help']}>Help</a></li>
+        <li><a href="/feedback" on:click={drawerClose} bind:this={links['/feedback']}>Feedback</a></li>
     </ul>
 </nav>
 
