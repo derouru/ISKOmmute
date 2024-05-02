@@ -264,7 +264,25 @@ function createMap() {
         const updateSource = setInterval(async () => {
             const geojson = await getLocation(updateSource);
             map.getSource('myPosition').setData(geojson);
-        }, 2000);
+
+            // CHECK IF CURRENT POSITION IS < 50 METERS FROM DESTINATION
+            const myPosition = await getCurrentPosition();
+            const { latitude, longitude } = myPosition.coords;
+
+            const distance = getDistance(latitude, longitude, end[1], end[0]);
+            // IF DISTANCE < 50, YOU HAVE ARRIVE AT YOUR DESTINATION
+            // GOTO MAIN PAGE
+            if (distance < 50) {
+              window.alert('You have arrived at your destination.');
+			        const url = `../`;
+			        goto(url);
+
+              //CLEAN-UP OF MAP INSTANCE
+              clearInterval(updateSource);
+              map.remove();
+            }
+
+        }, 2000); // 2s = 2000ms
 
         // GET CURRENT POSITION VIA NAVIGATOR
         function getCurrentPosition() {
@@ -272,6 +290,22 @@ function createMap() {
             navigator.geolocation.getCurrentPosition(resolve, reject);
           });
         }
+
+        // ATTEMPT: GET DISTANCE USING HARVERSINE FORMULA
+        function getDistance(lat1, long1, lat2, long2) {
+          const earthRadius = 6371e3; // Radius of the Earth in meters
+          const lat1Radians = lat1 * Math.PI / 180; // Latitude 1 in radians
+          const lat2Radians = lat2 * Math.PI / 180; // Latitude 2 in radians
+          const latDifference = (lat2 - lat1) * Math.PI / 180; // Difference in latitude in radians
+          const lonDifference = (long2 - long1) * Math.PI / 180; // Difference in longitude in radians
+
+          const a = Math.sin(latDifference / 2) * Math.sin(latDifference / 2) + Math.cos(lat1Radians) * Math.cos(lat2Radians) * Math.sin(lonDifference / 2) * Math.sin(lonDifference / 2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+          const distance = earthRadius * c; // Distance in meters
+          return distance;
+        }
+
       
         // GET LOCATION FUNCTION
         async function getLocation(updateSource) {
@@ -286,6 +320,7 @@ function createMap() {
                     speed: 1,
                     zoom: 18.3
                 });
+
                 // RETURN YOUR CURRENT POSITION AS A GEOJSON
                 return {
                     'type': 'FeatureCollection',
