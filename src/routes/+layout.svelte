@@ -54,7 +54,7 @@
 						<polygon points="45.63,75.8 0,40 45.63,4.2 50,8.6 9.37,40 50,71.4 "/>
 					</svg>
 				</button>
-				<h2>More Options</h2>
+				<h2 class="font-bold">More Options</h2>
 			</div>
 			<hr />
 			<Navigation />
@@ -71,9 +71,9 @@
 							<button class="lg:hidden btn btn-sm mr-4" on:click={drawerOpen}>
 								<span>
 									<svg viewBox="0 0 100 80" class="fill-token w-4 h-4">
-										<rect width="100" height="20" />
-										<rect y="30" width="100" height="20" />
-										<rect y="60" width="100" height="20" />
+										<rect width="100" height="20" class="hamburger"/>
+										<rect y="30" width="100" height="20" class="hamburger"/>
+										<rect y="60" width="100" height="20" class="hamburger"/>
 									</svg>
 								</span>
 							</button>
@@ -117,14 +117,19 @@
 
 	.welcome-header {
 		font-size: 2rem;
-		color: white;
 		text-align: center;
-		margin-top: 50vh;
+		margin-top: 45vh;
 		transform: translateY(-70%);
 		line-height: 1.5;
+		font-weight: bold;
+		padding: 25px;
 	}
 
 	.slot-content {
 		transform: translateY(-10%);
+	}
+
+	.hamburger {
+		fill: #979797;
 	}
 </style>

@@ -20,7 +20,7 @@
     }
 </script>
 
-<nav class="list-nav p-4">
+<nav class="list-nav p-4 font-bold">
     <ul>
         <li><a href="/" on:click={drawerClose} bind:this={links['/']}>Home</a></li>
         <li><a href="/settings" on:click={drawerClose} bind:this={links['/settings']}>Settings</a></li>
@@ -29,3 +29,4 @@
         <li><a href="/help" on:click={drawerClose} bind:this={links['/help']}>Help</a></li>
     </ul>
 </nav>
+
