@@ -76,10 +76,82 @@
   //      [121.072471, 14.650501] // NorthEast coordinates
   //  ];
   
+  // for pulsating dot
+  const size = 200;
+
+  // TRY MAKING PULSATING DOT
+  const pulsingDot = {
+    width: size,
+    height: size,
+    data: new Uint8Array(size * size * 4),
+
+    // When the layer is added to the map,
+    // get the rendering context for the map canvas.
+    onAdd: function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        this.context = canvas.getContext('2d');
+    },
+
+    // Call once before every frame where the icon will be used.
+    render: function () {
+        const duration = 1500;
+        const t = (performance.now() % duration) / duration;
+
+        const radius = (size / 2) * 0.2; //0.3
+        const outerRadius = (size / 2) * 0.7 * t + radius;
+        const context = this.context;
+
+        // OUTER CIRCLE
+        context.clearRect(0, 0, this.width, this.height);
+        context.beginPath();
+        context.arc(
+            this.width / 2,
+            this.height / 2,
+            outerRadius,
+            0,
+            Math.PI * 2
+        );
+        context.fillStyle = `rgba(254, 100, 111, ${1 - t})`;
+        context.fill();
+
+        // INNER CIRCLE
+        context.beginPath();
+        context.arc(
+            this.width / 2,
+            this.height / 2,
+            radius,
+            0,
+            Math.PI * 2
+        );
+        context.fillStyle = 'rgb(156, 41, 62)';
+        context.strokeStyle = 'white';
+        context.lineWidth = 10 * (1 - t);
+        context.fill();
+        context.stroke();
+
+        // UPDATE IMAGE DATA WITH CANVAS DATA
+        this.data = context.getImageData(
+            0,
+            0,
+            this.width,
+            this.height
+        ).data;
+        // TRIGGER UPDATE
+        map.triggerRepaint();
+        return true;
+    }
+  };  
+
   function handleClick() {
 			window.alert('You have arrived at your destination.');
 			const url = `../`;
 			goto(url);
+
+      //CLEAN-UP OF MAP INSTANCE
+      clearInterval(updateSource);
+      map.remove();
 	}
 
 // - - - - - - - MOUNT MAP - - - - - - - 
@@ -269,8 +341,12 @@ function createMap() {
         type: 'geojson',
         data: geojson
     });
-    
+
+    // ADD PULSATING DOT IMAGE
+    map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 3 });
+
     // ADD POINT AS A LAYER ON THE MAP
+    /*
     map.addLayer({
         'id': 'myPosition',
         'type': 'circle',
@@ -282,6 +358,17 @@ function createMap() {
           'circle-stroke-width': 3,
           'circle-stroke-opacity': 0.8
         }
+    });
+    */
+
+    // ADD PULSATING DOT AS A LAYER ON THE MAP
+    map.addLayer({
+      'id': 'myPosition',
+      'type': 'symbol',
+      'source': 'myPosition',
+      'layout': {
+          'icon-image': 'pulsing-dot'
+      }
     });
 
     // UPDATE CURRENT LOCATION SOURCE EVERY 2 SECONDS
