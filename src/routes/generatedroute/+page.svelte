@@ -119,17 +119,29 @@
       type: 'line',
       source: {
         type: 'geojson',
-        data: geojson
+        data: geojson,
+        lineMetrics: true
       },
       layout: {
         'line-join': 'round',
         'line-cap': 'round'
       },
       paint: {
-        'line-color': '#ff0f0f',
-        'line-width': 5,
-        'line-opacity': 0.75
-      }
+        'line-color': '#3396ff', //cool blue
+        'line-width': 4,
+        'line-opacity': 1,
+        'line-gradient': [
+                    'interpolate',
+                    ['linear'],
+                    ['line-progress'],
+                    0,
+                    '#2ea38c', //green-blue
+                    1,
+                    '#c52020' //cool red
+                ]
+            },
+
+
     });
   }
 }
@@ -147,49 +159,21 @@ function createMap() {
   // - - - - - - - ADD MAP LAYERS UPON LOADING - - - - - - - 
   map.on('load', function() {
     // ADD A TEST SOURCE, THEN ADD AS A LAYER
-    //map.addSource('contours', {
-    //      type: 'vector',
-    //      url: 'mapbox://mapbox.mapbox-terrain-v2'
-    //  });
-    //  map.addLayer({
-    //      'id': 'contours',
-    //      'type': 'line',
-    //      'source': 'contours', //Must match source
-    //      'source-layer': 'contour',
-    //  });
+    /*
+    map.addSource('contours', {
+          type: 'vector',
+          url: 'mapbox://mapbox.mapbox-terrain-v2'
+      });
+      map.addLayer({
+          'id': 'contours',
+          'type': 'line',
+          'source': 'contours', //Must match source
+          'source-layer': 'contour',
+      });
+    */
 
     // Note: Could add more safety for token
     // Note: Could fix custom map
-    // ADD BUILDINGS AS A SOURCE, THEN ADD AS A LAYER
-    map.addSource('buildings', {
-        type: 'vector',
-        url: 'mapbox://jbvicerra.1n1y9058' //from tileset id
-    });
-    map.addLayer({
-        'id': 'buildingsLayer',
-        'type': 'fill',
-        'source': 'buildings', //Must match source
-        'source-layer': 'building-cip39e', //from tileset
-        'paint': {
-          'fill-color': '#70a974'
-        }
-    })
-
-    // ADD ROADS AS A SOURCE
-    map.addSource('roads', {
-        type: 'vector',
-        url: 'mapbox://jbvicerra.5uo0osgn' //from tileset id
-    });
-    map.addLayer({
-        'id': 'roadsLayer',
-        'type': 'line',
-        'source': 'roads', //Must match source
-        'source-layer': 'roads2-0rh6ym', //from tileset
-        'paint': {
-          'line-color': '#969696',
-          'line-width': 5
-        }
-    })
 
     // ADD ENTRANCES AS A SOURCE
     map.addSource('entrances', {
@@ -202,10 +186,14 @@ function createMap() {
         'source': 'entrances', //Must match source
         'source-layer': 'entrance-0c31sm', //from tileset
         'paint': {
-          'circle-color': '#ff0f0f',
-          'circle-radius': 10
+          'circle-color': '#828282', //dark grey
+          'circle-radius': 7,
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 3,
+          'circle-stroke-opacity': 0.8
         }
     })
+
     // DISABLE MAP ZOOM
     map.scrollZoom.disable();
 
@@ -232,9 +220,41 @@ function createMap() {
         }
       },
       paint: {
-        'circle-radius': 10,
-        'circle-color': '#ff0f0f'
-      }
+          'circle-color': '#2ea38c', //green-blue
+          'circle-radius': 7,
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 3,
+          'circle-stroke-opacity': 0.8
+        }
+    });
+
+    //ADD DESTINATION POINT AS A LAYER IN THE MAP
+    map.addLayer({
+      id: 'pointdest',
+      type: 'circle',
+      source: {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'Point',
+                coordinates: end
+              }
+            }
+          ]
+        }
+      },
+      paint: {
+          'circle-color': '#c52020', //cool red
+          'circle-radius': 7,
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 3,
+          'circle-stroke-opacity': 0.5
+        }
     });
   // CAN ADD MORE FEATURES UPON LOADING HERE
 
@@ -242,104 +262,108 @@ function createMap() {
   // - - - - - - - MAP ON LOAD END - - - - - - -  
   // - - - - - - - MAP ON LOAD ASYNC - - - - - - -  
   map.on('load', async () => {
-        // GET YOUR CURRENT LOCATION
-        const geojson = await getLocation();
-        // ADD YOUR CURRENT LOCATION AS A SOURCE
-        map.addSource('myPosition', {
-            type: 'geojson',
-            data: geojson
-        });
-        // ADD POINT AS A LAYER ON THE MAP
-        map.addLayer({
-            'id': 'myPosition',
-            'type': 'circle',
-            'source': 'myPosition',
-            paint: {
-              'circle-radius': 10,
-              'circle-color': '#ff0f0f'
-            }
-        });
+    // GET YOUR CURRENT LOCATION
+    const geojson = await getLocation();
+    // ADD YOUR CURRENT LOCATION AS A SOURCE
+    map.addSource('myPosition', {
+        type: 'geojson',
+        data: geojson
+    });
+    
+    // ADD POINT AS A LAYER ON THE MAP
+    map.addLayer({
+        'id': 'myPosition',
+        'type': 'circle',
+        'source': 'myPosition',
+        paint: {
+          'circle-color': '#1481f5', //cool blue
+          'circle-radius': 7,
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 3,
+          'circle-stroke-opacity': 0.8
+        }
+    });
 
-        // UPDATE CURRENT LOCATION SOURCE EVERY 2 SECONDS
-        const updateSource = setInterval(async () => {
-            const geojson = await getLocation(updateSource);
-            map.getSource('myPosition').setData(geojson);
+    // UPDATE CURRENT LOCATION SOURCE EVERY 2 SECONDS
+    const updateSource = setInterval(async () => {
+        const geojson = await getLocation(updateSource);
+        map.getSource('myPosition').setData(geojson);
 
-            // CHECK IF CURRENT POSITION IS < 50 METERS FROM DESTINATION
-            const myPosition = await getCurrentPosition();
-            const { latitude, longitude } = myPosition.coords;
+        // CHECK IF CURRENT POSITION IS < 50 METERS FROM DESTINATION
+        const myPosition = await getCurrentPosition();
+        const { latitude, longitude } = myPosition.coords;
 
-            const distance = getDistance(latitude, longitude, end[1], end[0]);
-            // IF DISTANCE < 50, YOU HAVE ARRIVE AT YOUR DESTINATION
-            // GOTO MAIN PAGE
-            if (distance < 50) {
-              window.alert('You have arrived at your destination.');
-			        const url = `../`;
-			        goto(url);
+        const distance = getDistance(latitude, longitude, end[1], end[0]);
+        // IF DISTANCE < 50, YOU HAVE ARRIVE AT YOUR DESTINATION
+        // GOTO MAIN PAGE
+        if (distance < 50) {
+          window.alert('You have arrived at your destination.');
+			    const url = `../`;
+			    goto(url);
 
-              //CLEAN-UP OF MAP INSTANCE
-              clearInterval(updateSource);
-              map.remove();
-            }
-
-        }, 2000); // 2s = 2000ms
-
-        // GET CURRENT POSITION VIA NAVIGATOR
-        function getCurrentPosition() {
-          return new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-          });
+          //CLEAN-UP OF MAP INSTANCE
+          clearInterval(updateSource);
+          map.remove();
         }
 
-        // ATTEMPT: GET DISTANCE USING HARVERSINE FORMULA
-        function getDistance(lat1, long1, lat2, long2) {
-          const earthRadius = 6371e3; // Radius of the Earth in meters
-          const lat1Radians = lat1 * Math.PI / 180; // Latitude 1 in radians
-          const lat2Radians = lat2 * Math.PI / 180; // Latitude 2 in radians
-          const latDifference = (lat2 - lat1) * Math.PI / 180; // Difference in latitude in radians
-          const lonDifference = (long2 - long1) * Math.PI / 180; // Difference in longitude in radians
+    }, 2000); // 2s = 2000ms
 
-          const a = Math.sin(latDifference / 2) * Math.sin(latDifference / 2) + Math.cos(lat1Radians) * Math.cos(lat2Radians) * Math.sin(lonDifference / 2) * Math.sin(lonDifference / 2);
-          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    // GET CURRENT POSITION VIA NAVIGATOR
+    function getCurrentPosition() {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+    }
 
-          const distance = earthRadius * c; // Distance in meters
-          return distance;
-        }
+    // ATTEMPT: GET DISTANCE USING HARVERSINE FORMULA
+    function getDistance(lat1, long1, lat2, long2) {
+      const earthRadius = 6371e3; // Radius of the Earth in meters
+      const lat1Radians = lat1 * Math.PI / 180; // Latitude 1 in radians
+      const lat2Radians = lat2 * Math.PI / 180; // Latitude 2 in radians
+      const latDifference = (lat2 - lat1) * Math.PI / 180; // Difference in latitude in radians
+      const lonDifference = (long2 - long1) * Math.PI / 180; // Difference in longitude in radians
+
+      const a = Math.sin(latDifference / 2) * Math.sin(latDifference / 2) + Math.cos(lat1Radians) * Math.cos(lat2Radians) * Math.sin(lonDifference / 2) * Math.sin(lonDifference / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+      const distance = earthRadius * c; // Distance in meters
+      return distance;
+    }
 
       
-        // GET LOCATION FUNCTION
-        async function getLocation(updateSource) {
-            // TRY SECTION
-            try {
-                // GET CURRENT POSITION
-                const position = await getCurrentPosition();
-                const { latitude, longitude } = position.coords;
-                // FLY TO YOUR CURRENT POSITION
-                map.flyTo({
-                    center: [longitude, latitude],
-                    speed: 1,
-                    zoom: 18.3
-                });
+    // GET LOCATION FUNCTION
+    async function getLocation(updateSource) {
+        // TRY SECTION
+        try {
+            // GET CURRENT POSITION
+            const position = await getCurrentPosition();
+            const { latitude, longitude } = position.coords;
+            // FLY TO YOUR CURRENT POSITION
+            map.flyTo({
+                center: [longitude, latitude],
+                speed: 1,
+                zoom: 18.3
+            });
 
-                // RETURN YOUR CURRENT POSITION AS A GEOJSON
-                return {
-                    'type': 'FeatureCollection',
-                    'features': [
-                        {
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [longitude, latitude]
-                            }
-                        }
-                    ]
-                };
-            // CATCH SECTION
-            } catch (err) {
-                if (updateSource) clearInterval(updateSource);
-                throw new Error(err);
-            }
+            // RETURN YOUR CURRENT POSITION AS A GEOJSON
+            return {
+                'type': 'FeatureCollection',
+                'features': [
+                    {
+                      'type': 'Feature',
+                      'geometry': {
+                        'type': 'Point',
+                        'coordinates': [longitude, latitude]
+                      }
+                    }
+                  ]
+              };
+        // CATCH SECTION
+        } catch (err) {
+            if (updateSource) clearInterval(updateSource);
+            throw new Error(err);
         }
+    }
   });
 
   // - - - - - - - MAP ON LOAD ASYNC END- - - - - - -  
