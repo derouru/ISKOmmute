@@ -28,6 +28,7 @@
 		endPoint = value;
 	});
   // - - - - - - - DETERMINE START AND END BASED ON STRING VALUES FROM DROPDOWN MENU - - - - - - -
+  // Can improve on this by storing longitude and latitude data to somewhere, instead of direct hardcoding
   if (startPoint === 'AECH') {
      start = [ 121.068689757108132, 14.648708168263134 ];
   } else if (startPoint === 'CSLib') {
@@ -70,15 +71,87 @@
   };
 
   // for setting max bounds when panning
-  const bounds = [
-        [121.067833, 14.647044], // SouthWest coordinates
-        [121.072471, 14.650501] // NorthEast coordinates
-    ];
+  //const bounds = [
+  //      [121.067833, 14.647044], // SouthWest coordinates
+  //      [121.072471, 14.650501] // NorthEast coordinates
+  //  ];
   
+  // for pulsating dot
+  const size = 200;
+
+  // TRY MAKING PULSATING DOT
+  const pulsingDot = {
+    width: size,
+    height: size,
+    data: new Uint8Array(size * size * 4),
+
+    // When the layer is added to the map,
+    // get the rendering context for the map canvas.
+    onAdd: function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        this.context = canvas.getContext('2d');
+    },
+
+    // Call once before every frame where the icon will be used.
+    render: function () {
+        const duration = 1500;
+        const t = (performance.now() % duration) / duration;
+
+        const radius = (size / 2) * 0.2; //0.3
+        const outerRadius = (size / 2) * 0.7 * t + radius;
+        const context = this.context;
+
+        // OUTER CIRCLE
+        context.clearRect(0, 0, this.width, this.height);
+        context.beginPath();
+        context.arc(
+            this.width / 2,
+            this.height / 2,
+            outerRadius,
+            0,
+            Math.PI * 2
+        );
+        context.fillStyle = `rgba(254, 100, 111, ${1 - t})`;
+        context.fill();
+
+        // INNER CIRCLE
+        context.beginPath();
+        context.arc(
+            this.width / 2,
+            this.height / 2,
+            radius,
+            0,
+            Math.PI * 2
+        );
+        context.fillStyle = 'rgb(156, 41, 62)';
+        context.strokeStyle = 'white';
+        context.lineWidth = 10 * (1 - t);
+        context.fill();
+        context.stroke();
+
+        // UPDATE IMAGE DATA WITH CANVAS DATA
+        this.data = context.getImageData(
+            0,
+            0,
+            this.width,
+            this.height
+        ).data;
+        // TRIGGER UPDATE
+        map.triggerRepaint();
+        return true;
+    }
+  };  
+
   function handleClick() {
 			window.alert('You have arrived at your destination.');
 			const url = `../`;
 			goto(url);
+
+      //CLEAN-UP OF MAP INSTANCE
+      clearInterval(updateSource);
+      map.remove();
 	}
 
 // - - - - - - - MOUNT MAP - - - - - - - 
@@ -89,7 +162,7 @@
 // GET ROUTE FUNCTION FOR DIRECTIONS REQUEST
 // create a function to make a directions request
   async function getRoute(start, end) {
-  // make a directions request using cycling profile
+  // make a directions request using walking profile
   // an arbitrary start will always be the same
   // only the end or destination will change
   const query = await fetch(
@@ -118,17 +191,29 @@
       type: 'line',
       source: {
         type: 'geojson',
-        data: geojson
+        data: geojson,
+        lineMetrics: true
       },
       layout: {
         'line-join': 'round',
         'line-cap': 'round'
       },
       paint: {
-        'line-color': '#ff0f0f',
-        'line-width': 5,
-        'line-opacity': 0.75
-      }
+        'line-color': '#3396ff', //cool blue
+        'line-width': 4,
+        'line-opacity': 1,
+        'line-gradient': [
+                    'interpolate',
+                    ['linear'],
+                    ['line-progress'],
+                    0,
+                    '#2ea38c', //green-blue
+                    1,
+                    '#c52020' //cool red
+                ]
+            },
+
+
     });
   }
 }
@@ -141,54 +226,26 @@ function createMap() {
     style: mapStyle,
     center: [viewState.longitude, viewState.latitude],
     zoom: viewState.zoom,
-    maxBounds: bounds
+    //maxBounds: bounds
   });
   // - - - - - - - ADD MAP LAYERS UPON LOADING - - - - - - - 
   map.on('load', function() {
     // ADD A TEST SOURCE, THEN ADD AS A LAYER
-    //map.addSource('contours', {
-    //      type: 'vector',
-    //      url: 'mapbox://mapbox.mapbox-terrain-v2'
-    //  });
-    //  map.addLayer({
-    //      'id': 'contours',
-    //      'type': 'line',
-    //      'source': 'contours', //Must match source
-    //      'source-layer': 'contour',
-    //  });
+    /*
+    map.addSource('contours', {
+          type: 'vector',
+          url: 'mapbox://mapbox.mapbox-terrain-v2'
+      });
+      map.addLayer({
+          'id': 'contours',
+          'type': 'line',
+          'source': 'contours', //Must match source
+          'source-layer': 'contour',
+      });
+    */
 
     // Note: Could add more safety for token
     // Note: Could fix custom map
-    // ADD BUILDINGS AS A SOURCE, THEN ADD AS A LAYER
-    map.addSource('buildings', {
-        type: 'vector',
-        url: 'mapbox://jbvicerra.1n1y9058' //from tileset id
-    });
-    map.addLayer({
-        'id': 'buildingsLayer',
-        'type': 'fill',
-        'source': 'buildings', //Must match source
-        'source-layer': 'building-cip39e', //from tileset
-        'paint': {
-          'fill-color': '#70a974'
-        }
-    })
-
-    // ADD ROADS AS A SOURCE
-    map.addSource('roads', {
-        type: 'vector',
-        url: 'mapbox://jbvicerra.5uo0osgn' //from tileset id
-    });
-    map.addLayer({
-        'id': 'roadsLayer',
-        'type': 'line',
-        'source': 'roads', //Must match source
-        'source-layer': 'roads2-0rh6ym', //from tileset
-        'paint': {
-          'line-color': '#969696',
-          'line-width': 5
-        }
-    })
 
     // ADD ENTRANCES AS A SOURCE
     map.addSource('entrances', {
@@ -201,16 +258,20 @@ function createMap() {
         'source': 'entrances', //Must match source
         'source-layer': 'entrance-0c31sm', //from tileset
         'paint': {
-          'circle-color': '#ff0f0f',
-          'circle-radius': 10
+          'circle-color': '#828282', //dark grey
+          'circle-radius': 7,
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 3,
+          'circle-stroke-opacity': 0.8
         }
     })
+
     // DISABLE MAP ZOOM
     map.scrollZoom.disable();
 
     // REQUEST FOR DIRECTIONS
     getRoute(start, end);
-    // ADD STARTING POINT AS A LAYER IN THE MAPP
+    // ADD STARTING POINT AS A LAYER IN THE MAP
     map.addLayer({
       id: 'point',
       type: 'circle',
@@ -231,14 +292,166 @@ function createMap() {
         }
       },
       paint: {
-        'circle-radius': 10,
-        'circle-color': '#ff0f0f'
-      }
+          'circle-color': '#2ea38c', //green-blue
+          'circle-radius': 7,
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 3,
+          'circle-stroke-opacity': 0.8
+        }
     });
+
+    //ADD DESTINATION POINT AS A LAYER IN THE MAP
+    map.addLayer({
+      id: 'pointdest',
+      type: 'circle',
+      source: {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'Point',
+                coordinates: end
+              }
+            }
+          ]
+        }
+      },
+      paint: {
+          'circle-color': '#c52020', //cool red
+          'circle-radius': 7,
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 3,
+          'circle-stroke-opacity': 0.5
+        }
+    });
+  // CAN ADD MORE FEATURES UPON LOADING HERE
 
   });
   // - - - - - - - MAP ON LOAD END - - - - - - -  
   // - - - - - - - MAP ON LOAD ASYNC - - - - - - -  
+  map.on('load', async () => {
+    // GET YOUR CURRENT LOCATION
+    const geojson = await getLocation();
+    // ADD YOUR CURRENT LOCATION AS A SOURCE
+    map.addSource('myPosition', {
+        type: 'geojson',
+        data: geojson
+    });
+
+    // ADD PULSATING DOT IMAGE
+    map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 3 });
+
+    // ADD POINT AS A LAYER ON THE MAP
+    /*
+    map.addLayer({
+        'id': 'myPosition',
+        'type': 'circle',
+        'source': 'myPosition',
+        paint: {
+          'circle-color': '#1481f5', //cool blue
+          'circle-radius': 7,
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 3,
+          'circle-stroke-opacity': 0.8
+        }
+    });
+    */
+
+    // ADD PULSATING DOT AS A LAYER ON THE MAP
+    map.addLayer({
+      'id': 'myPosition',
+      'type': 'symbol',
+      'source': 'myPosition',
+      'layout': {
+          'icon-image': 'pulsing-dot'
+      }
+    });
+
+    // UPDATE CURRENT LOCATION SOURCE EVERY 2 SECONDS
+    const updateSource = setInterval(async () => {
+        const geojson = await getLocation(updateSource);
+        map.getSource('myPosition').setData(geojson);
+
+        // CHECK IF CURRENT POSITION IS < 50 METERS FROM DESTINATION
+        const myPosition = await getCurrentPosition();
+        const { latitude, longitude } = myPosition.coords;
+
+        const distance = getDistance(latitude, longitude, end[1], end[0]);
+        // IF DISTANCE < 50, YOU HAVE ARRIVE AT YOUR DESTINATION
+        // GOTO MAIN PAGE
+        if (distance < 50) {
+          window.alert('You have arrived at your destination.');
+			    const url = `../`;
+			    goto(url);
+
+          //CLEAN-UP OF MAP INSTANCE
+          clearInterval(updateSource);
+          map.remove();
+        }
+
+    }, 2000); // 2s = 2000ms
+
+    // GET CURRENT POSITION VIA NAVIGATOR
+    function getCurrentPosition() {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+    }
+
+    // ATTEMPT: GET DISTANCE USING HARVERSINE FORMULA
+    function getDistance(lat1, long1, lat2, long2) {
+      const earthRadius = 6371e3; // Radius of the Earth in meters
+      const lat1Radians = lat1 * Math.PI / 180; // Latitude 1 in radians
+      const lat2Radians = lat2 * Math.PI / 180; // Latitude 2 in radians
+      const latDifference = (lat2 - lat1) * Math.PI / 180; // Difference in latitude in radians
+      const lonDifference = (long2 - long1) * Math.PI / 180; // Difference in longitude in radians
+
+      const a = Math.sin(latDifference / 2) * Math.sin(latDifference / 2) + Math.cos(lat1Radians) * Math.cos(lat2Radians) * Math.sin(lonDifference / 2) * Math.sin(lonDifference / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+      const distance = earthRadius * c; // Distance in meters
+      return distance;
+    }
+
+      
+    // GET LOCATION FUNCTION
+    async function getLocation(updateSource) {
+        // TRY SECTION
+        try {
+            // GET CURRENT POSITION
+            const position = await getCurrentPosition();
+            const { latitude, longitude } = position.coords;
+            // FLY TO YOUR CURRENT POSITION
+            map.flyTo({
+                center: [longitude, latitude],
+                speed: 1,
+                zoom: 18.3
+            });
+
+            // RETURN YOUR CURRENT POSITION AS A GEOJSON
+            return {
+                'type': 'FeatureCollection',
+                'features': [
+                    {
+                      'type': 'Feature',
+                      'geometry': {
+                        'type': 'Point',
+                        'coordinates': [longitude, latitude]
+                      }
+                    }
+                  ]
+              };
+        // CATCH SECTION
+        } catch (err) {
+            if (updateSource) clearInterval(updateSource);
+            throw new Error(err);
+        }
+    }
+  });
 
   // - - - - - - - MAP ON LOAD ASYNC END- - - - - - -  
   }
