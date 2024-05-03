@@ -46,20 +46,21 @@
     <div class="rating flex">
         {#each [5, 4, 3, 2, 1] as number}
             <input type="radio" id={`star${number}`} name="rating" value={number} class="rating__input" on:click={handleClick} on:change={handleRatingChange}>
-            <label for={`star${number}`} class="rating__label">&#9733;</label>
+            <!-- <label for={`star${number}`} class="rating__label">&#9733;</label> -->
+            <button class="rating__label" id={`stars${number}`}>&#9733;</button>
         {/each}
     </div>
     <p>Feedback:</p>
     <div class = "flex justify-center items-center">
         <form class="w-full max-w-lg" on:submit|preventDefault={handleSubmit}>
-            <textarea bind:value={feedback} required></textarea>
+            <textarea id="feedback-txtarea" bind:value={feedback} required></textarea>
         </form>
     </div>
-    <button id="generateBtn" class="btn btn-xl variant-filled generate-route-btn" on:click={handleSubmit}>Submit</button>
+    <button id="submitBtn" class="btn btn-xl variant-filled submit-feedback-btn" on:click={handleSubmit}>Submit</button>
 </div>
 
 <style>
-	#generateBtn {
+	#submitBtn {
 		font-size: 1.4rem;
 		text-align: center;
 		font-weight: 600;
@@ -68,7 +69,7 @@
 		margin-top: 1.8rem;
 	}
 
-	.generate-route-btn:hover {
+	.submit-feedback-btn:hover {
 		background-color: #800000;
 	}
 
