@@ -95,7 +95,7 @@
       "_stores2.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.uGXTYzMu.css"
+      "_app/immutable/assets/_layout.-mVYrPXi.css"
     ],
     "assets": [
       "_app/immutable/assets/splashscreen.DfyYPhhD.png"
@@ -109,6 +109,21 @@
     "imports": [
       "_ssr.js",
       "_client.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.D-6LN_p5.css"
+    ]
+  },
+  "src/routes/feedback/+page.svelte": {
+    "file": "entries/pages/feedback/_page.svelte.js",
+    "name": "entries/pages/feedback/_page.svelte",
+    "src": "src/routes/feedback/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_ssr.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.DJJGxg4Q.css"
     ]
   },
   "src/routes/generatedroute/+page.svelte": {
