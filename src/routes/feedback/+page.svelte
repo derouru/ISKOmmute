@@ -4,34 +4,42 @@
     let lastRating = 0;
 
     function handleClick(event) {
-        if (lastRating === event.target.value) {
-            rating = 0;
-            lastRating = 0;
-            event.target.checked = false;
+    const clickedRating = parseInt(event.target.value);
+
+    // Iterate through stars and turn them yellow up to the clicked star
+    const stars = document.querySelectorAll('.rating__label');
+    for (let i = stars.length - 1; i >= 0; i--) {
+        const star = stars[i];
+        if (parseInt(star.value) <= clickedRating) {
+            star.style.color = 'gold';
         } else {
-            lastRating = event.target.value;
+            star.style.color = 'gray';
         }
+    }
+    //Update rating
+    rating = clickedRating;
+    lastRating = clickedRating;
     }
 
     function handleRatingChange(event) {
-        rating = event.target.value;
+    rating = parseInt(event.target.value);
     }
-    
+
     function handleSubmit() {
-        if (!feedback && rating === 0) {
-            window.alert('Feedback cannot be empty.');
-        } else {
-            window.alert(`Thank you for your feedback! Your input is valuable to us.`);
-            const data = `Rating: ${rating} stars\nFeedback: ${feedback}\n`
-            const blob = new Blob([data], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'feedback.txt';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+    if (!feedback && rating === 0) {
+        window.alert('Feedback cannot be empty.');
+    } else {
+        window.alert(`Thank you for your feedback! Your input is valuable to us.`);
+        const data = `Rating: ${rating} stars\nFeedback: ${feedback}\n`
+        const blob = new Blob([data], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'feedback.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
     }
 </script>
 
@@ -47,7 +55,7 @@
         {#each [5, 4, 3, 2, 1] as number}
             <input type="radio" id={`star${number}`} name="rating" value={number} class="rating__input" on:click={handleClick} on:change={handleRatingChange}>
             <!-- <label for={`star${number}`} class="rating__label">&#9733;</label> -->
-            <button class="rating__label" id={`stars${number}`}>&#9733;</button>
+            <button class="rating__label" id={`stars${number}`} value={number} on:click={handleClick}>&#9733;</button>
         {/each}
     </div>
     <p>Feedback:</p>
@@ -60,35 +68,31 @@
 </div>
 
 <style>
-	#submitBtn {
-		font-size: 1.4rem;
-		text-align: center;
-		font-weight: 600;
-		background-color: #9C293E;
-		color: white;
-		margin-top: 1.8rem;
-	}
+    #submitBtn {
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: 600;
+    background-color: #9C293E;
+    color: white;
+    margin-top: 1.8rem;
+    }
 
-	.submit-feedback-btn:hover {
-		background-color: #800000;
-	}
+    .submit-feedback-btn:hover {
+    background-color: #800000;
+    }
 
     .rating {
-        direction: rtl;
+    direction: rtl;
     }
 
     .rating__input {
-        display: none;
+    display: none;
     }
 
     .rating__label {
-        font-size: 2em;
-        color: gray;
-        cursor: pointer;
+    font-size: 2em;
+    color: gray;
+    cursor: pointer;
     }
 
-    .rating__input:checked ~ .rating__label,
-    .rating__input:hover ~ .rating__label {
-        color: gold;
-    }
 </style>
