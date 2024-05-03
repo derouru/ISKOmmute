@@ -150,7 +150,7 @@
 			goto(url);
 
       //CLEAN-UP OF MAP INSTANCE
-      clearInterval(updateSource);
+      //clearInterval(updateSource);
       map.remove();
 	}
 
@@ -389,7 +389,7 @@ function createMap() {
 			    goto(url);
 
           //CLEAN-UP OF MAP INSTANCE
-          clearInterval(updateSource);
+          //clearInterval(updateSource);
           map.remove();
         }
 
