@@ -8,26 +8,34 @@
         drawerStore.close();
     }
 
-    let links = {}; // Dictionary of references to each link
+    const links_lst = [
+        ['/', 'Home'],
+        ['/settings', 'Settings'],
+        ['/tos', 'Terms of Service'],
+        ['/privacypolicy', 'Privacy Policy'],
+        ['/help', 'Help'],
+        ['/feedback', 'Feedback']
+    ];
 
-    // Reactive statement that sets focus to the link that corresponds to the current route
-    $: {
-        // @ts-ignore
-        const link = links[$page.url.pathname];
-        if (link) {
-            link.focus();
-        }
-    }
 </script>
 
-<nav class="list-nav p-4 font-bold">
+<nav class="list-nav p-4 font-black">
     <ul>
-        <li><a href="/" on:click={drawerClose} bind:this={links['/']}>Home</a></li>
-        <li><a href="/settings" on:click={drawerClose} bind:this={links['/settings']}>Settings</a></li>
-        <li><a href="/tos" on:click={drawerClose} bind:this={links['/tos']}>Terms of Service</a></li>
-        <li><a href="/privacypolicy" on:click={drawerClose} bind:this={links['/privacypolicy']}>Privacy Policy</a></li>
-        <li><a href="/help" on:click={drawerClose} bind:this={links['/help']}>Help</a></li>
-        <li><a href="/feedback" on:click={drawerClose} bind:this={links['/feedback']}>Feedback</a></li>
+        {#each links_lst as [link, name]}
+            <li>
+                <a href={link} on:click={drawerClose} class:active={$page.url.pathname === link}>{name}</a>
+            </li>
+        {/each}
     </ul>
 </nav>
 
+<style>
+    .active {
+        color: #FFFFFF;
+        background-color: #9C293E;
+    }
+
+    .active:hover {
+        background-color: #800000;
+    }
+</style>
