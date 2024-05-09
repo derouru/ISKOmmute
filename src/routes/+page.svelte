@@ -33,6 +33,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Home | ISKOmmute</title>
+</svelte:head>
+
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">
 	<h1 class="wdywtg-text">Where do you want to go?</h1>
 

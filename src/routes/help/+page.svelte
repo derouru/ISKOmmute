@@ -2,9 +2,9 @@
 	/* insert relevant script here in the future */
 </script>
 
-<head>
-    <title>ISKOmmute FAQ and Help</title>
-</head>
+<svelte:head>
+    <title>FAQ and Help | ISKOmmute</title>
+</svelte:head>
 
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">
 	<h1>ISKOmmute FAQ and Help</h1>

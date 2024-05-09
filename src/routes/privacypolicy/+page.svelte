@@ -2,9 +2,9 @@
 	/* insert relevant script here in the future */
 </script>
 
-<head>
-    <title>Iskommute Privacy Policy</title>
-</head>
+<svelte:head>
+    <title>Privacy Policy | ISKOmmute</title>
+</svelte:head>
 
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">
 	<h1>Iskommute Privacy Policy</h1>

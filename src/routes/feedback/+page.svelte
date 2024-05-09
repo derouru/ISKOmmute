@@ -43,6 +43,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Feedback | ISKOmmute</title>
+</svelte:head>
+
 <title>Iskommute Feedback</title>
 
 <div class="container p-10 space-y-4 flex flex-col items-center justify-center h-screen">

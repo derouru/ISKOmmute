@@ -1,3 +1,6 @@
+<svelte:head>
+    <title>Generated Route | ISKOmmute</title>
+</svelte:head>
 
 <a id="back_button" href="../">Back</a>
 <button id="doneBtn" class="btn btn-xl variant-filled" on:click={handleClick}>Done</button>
