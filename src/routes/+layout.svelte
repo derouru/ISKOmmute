@@ -113,6 +113,7 @@
 		background-image: url('$lib/assets/splashscreen.png');
 		background-position: center;
 		background-repeat: no-repeat;
+		background-size: 100%;
 	}
 
 	.welcome-header {
