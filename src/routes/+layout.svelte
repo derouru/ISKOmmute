@@ -48,9 +48,9 @@
 {:else}
 	<div in:fade={{ duration: 400 }}>
 		<Drawer>
-			<div class="flex items-center p-4"> 
+			<div class="flex items-center p-4 bg-[#9C293E] text-white"> 
 				<button class="fill-token w-3 h-3 cursor-pointer mr-4" on:click={drawerClose} aria-label="Close Drawer">
-					<svg viewBox="0 0 50 80">
+					<svg viewBox="0 0 50 80" class="fill-white">
 						<polygon points="45.63,75.8 0,40 45.63,4.2 50,8.6 9.37,40 50,71.4 "/>
 					</svg>
 				</button>

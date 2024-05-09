@@ -70,7 +70,7 @@
 		margin-bottom: 1.8rem;
 	}
 
-	#generateBtn {
+	.generate-route-btn {
 		font-size: 1.4rem;
 		text-align: center;
 		font-weight: 600;
