@@ -2,8 +2,7 @@
     <title>Generated Route | ISKOmmute</title>
 </svelte:head>
 
-<a id="back_button" href="../">Back</a>
-<button id="doneBtn" class="btn btn-xl variant-filled" on:click={handleClick}>Done</button>
+<button id="back_button" class="btn btn-xl variant-filled" on:click={handleClick}>&lt;</button>
 <div id="map" bind:this={mapElement}></div>
 <script>
 // - - - - - - - SVELTE ROUTE IMPORTS - - - - - - -
@@ -70,7 +69,7 @@
   let viewState = {
   longitude: 121.069,
   latitude: 14.649,
-  zoom: 18.3,
+  zoom: 17,
   };
 
   // for setting max bounds when panning
@@ -470,15 +469,11 @@ function createMap() {
     position: absolute;
     margin-top: 5%;
     margin-left: 5%;
-    color: blue;
-    
-  }
-  #doneBtn {
-    position: absolute;
-    margin-top: 5%;
-    margin-left: 75%;
-    color: blue;
-    font-size: 1em;
-    padding: 0.5em 1em;
+    font-size: 1.4rem;
+		font-weight: 600;
+    padding: 0.5em 0.7em;
+		color: white;
+    background-color: #9C293E;
+    border-radius: 30%;
   }
 </style>

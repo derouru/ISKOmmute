@@ -79,6 +79,7 @@
     background-color: #9C293E;
     color: white;
     margin-top: 1.8rem;
+    
     }
 
     .submit-feedback-btn:hover {
