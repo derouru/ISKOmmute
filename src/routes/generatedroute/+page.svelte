@@ -1,8 +1,7 @@
 <svelte:head>
     <title>Generated Route | ISKOmmute</title>
 </svelte:head>
-
-<button id="back_button" class="btn btn-xl variant-filled" on:click={handleClick}>&lt;</button>
+<button id="back_button" class="btn btn-xl variant-filled" on:click={handleClick}> &lt; </button>
 <div id="instructions">
   <div id = "instructionswrapper">
     <img id="walkingimg" src="src/lib/assets/walking-icon.svg" alt="walking-icon-free" width=30px, height=auto>
@@ -73,7 +72,7 @@
   } else if (endPoint === 'NIGS') {
      end = [ 121.069456352161723, 14.648350367516176 ]; 
   }
-  //- - - - - SETUP MAP PROPERTIES - - - - - - -
+  //- - - - - SETUP MAP PROPERTIES - - - - - - - - - - - - - -  
   //start = [ 121.068689757108132, 14.648708168263134 ];  //TRY DEFINING ARBITRARY START POINT FOR NAVIGATION
   //end = [ 121.070964437966168, 14.648304820957335 ]; //TRY DEFINING ARBITRARY END POINT FOR NAVIGATION
 
@@ -82,16 +81,21 @@
   let accessToken = 'pk.eyJ1IjoiamJ2aWNlcnJhIiwiYSI6ImNsdjBudzkwbDBmNW0yaXZwamhodDFsZTQifQ.M2wEKMepxK2f0le_AJ4Xmw';
   let mapStyle = 'mapbox://styles/mapbox/streets-v12';
   let viewState = {
-  longitude: 121.069,
-  latitude: 14.649,
+  longitude: start[0],
+  latitude: start[1],
   zoom: 17,
   };
 
+  // for setting start longitude, latitude on map load
+  // longitude: 121.069,
+  // latitude: 14.649,
+
   // for setting max bounds when panning
-  //const bounds = [
-  //      [121.067833, 14.647044], // SouthWest coordinates
-  //      [121.072471, 14.650501] // NorthEast coordinates
-  //  ];
+  /*const bounds = [
+        [121.03904653077666, 14.632427391768406], // SouthWest coordinates
+        [121.07972257053247, 14.666687988622964] // NorthEast coordinates
+    ];
+  */
   
   // for pulsating dot
   const size = 200;
@@ -171,7 +175,7 @@
       map.remove();
 	}
 
-// - - - - - - - MOUNT MAP - - - - - - - 
+// - - - - - - - MOUNT MAP - - - - - - - - - - - - - -  
   onMount(() => {
   createMap();
   });
@@ -242,7 +246,7 @@
   instructions.innerHTML = `<p><strong> ${duration} mins.</strong></p><p>ETA ${time}</p>`;
   }
 
-// - - - - - - - SETUP MAP - - - - - - - 
+// - - - - - - - SETUP MAP - - - - - - - - - - - - - -  
 function createMap() {
   map = new mapboxgl.Map({
     accessToken: accessToken,
@@ -252,7 +256,7 @@ function createMap() {
     zoom: viewState.zoom,
     //maxBounds: bounds
   });
-  // - - - - - - - ADD MAP LAYERS UPON LOADING - - - - - - - 
+  // - - - - - - - ADD MAP LAYERS UPON LOADING - - - - - - - - - - - - - -  
   map.on('load', function() {
     // ADD A TEST SOURCE, THEN ADD AS A LAYER
     /*
@@ -274,15 +278,15 @@ function createMap() {
     // ADD ENTRANCES AS A SOURCE
     map.addSource('entrances', {
         type: 'vector',
-        url: 'mapbox://jbvicerra.68nr8fqg' //from tileset id
+        url: 'mapbox://jbvicerra.clv3l14h73n4a1trt1swv4nvo-9gs1p' //from campus tileset id
     });
     map.addLayer({
         'id': 'entrancesLayer',
         'type': 'circle',
         'source': 'entrances', //Must match source
-        'source-layer': 'entrance-0c31sm', //from tileset
+        'source-layer': 'UP_Diliman_Campus', //from campus tileset layer name
         'paint': {
-          'circle-color': '#828282', //dark grey
+          'circle-color': '#A9A9A9', //dark grey
           'circle-radius': 7,
           'circle-stroke-color': 'white',
           'circle-stroke-width': 3,
@@ -291,7 +295,7 @@ function createMap() {
     })
 
     // DISABLE MAP ZOOM
-    map.scrollZoom.disable();
+    //map.scrollZoom.disable();
 
     // REQUEST FOR DIRECTIONS
     getRoute(start, end);
@@ -352,11 +356,38 @@ function createMap() {
           'circle-stroke-opacity': 0.5
         }
     });
+
+    // ADD POPUP LABELS WHEN LOCATION POINTS ARE CLICKED
+    map.on('click', 'entrancesLayer', (e) => {
+      const popUps = document.getElementsByClassName('mapboxgl-popup');
+      if (popUps[0]) popUps[0].remove();
+
+      var popcoordinates = e.features[0].geometry.coordinates.slice();
+      var popdescription = e.features[0].properties.description;
+      while (Math.abs(e.lngLat.lng - popcoordinates[0]) > 180) {
+        popcoordinates[0] += e.lngLat.lng > popcoordinates[0] ? 360 : -360;
+      }
+
+      new mapboxgl.Popup()
+          .setLngLat(popcoordinates)
+          //.setHTML("placeholder text test")
+          .setHTML(popdescription)
+          .addTo(map);
+      });
+
+    map.on('mouseenter', 'entrancesLayer', () => {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    map.on('mouseleave', 'entrancesLayer', () => {
+      map.getCanvas().style.cursor = '';
+    });
+
     // CAN ADD MORE FEATURES UPON LOADING HERE
 
   });
-  // - - - - - - - MAP ON LOAD END - - - - - - -  
-  // - - - - - - - MAP ON LOAD ASYNC - - - - - - -  
+  // - - - - - - - MAP ON LOAD END - - - - - - - - - - - - - -  
+  // - - - - - - - MAP ON LOAD ASYNC - - - - - - - - - - - - - -  
   map.on('load', async () => {
     // GET YOUR CURRENT LOCATION
     const geojson = await getLocation();
@@ -417,7 +448,7 @@ function createMap() {
           map.remove();
         }
 
-    }, 2000); // 2s = 2000ms
+    }, 3000); // 3s = 3000ms
 
     // GET CURRENT POSITION VIA NAVIGATOR
     function getCurrentPosition() {
@@ -449,11 +480,13 @@ function createMap() {
             const position = await getCurrentPosition();
             const { latitude, longitude } = position.coords;
             // FLY TO YOUR CURRENT POSITION
-            map.flyTo({
-                center: [longitude, latitude],
-                speed: 1,
-                zoom: 18.3
-            });
+
+            // TEMPORARILY DISABLE FLYTOOOOOOO
+            //map.flyTo({
+            //    center: [longitude, latitude],
+            //    speed: 1,
+            //    zoom: 18.3
+            //});
 
             // RETURN YOUR CURRENT POSITION AS A GEOJSON
             return {
@@ -476,7 +509,7 @@ function createMap() {
     }
   });
 
-  // - - - - - - - MAP ON LOAD ASYNC END- - - - - - -  
+  // - - - - - - - MAP ON LOAD ASYNC END- - - - - - - - - - - - - -  
   }
 </script>
 
@@ -485,6 +518,18 @@ function createMap() {
     width: 100vw;
     height: 100vh;
     margin-top: 10vh;
+    overflow: hidden;
+    z-index: -1;
+  }
+  /* Ignore the warning that the CSS Selector is unused. mapboxgl-popup will be generated on runtime */
+  /* Svelte can't seem to locate it (?) */
+  .mapboxgl-popup {
+        max-width: 400px;
+        padding: 10px;
+        font:
+            12px/20px 'Helvetica Neue',
+            Arial,
+            sans-serif;
   }
   #back_button {
     position: absolute;
