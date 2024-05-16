@@ -12,8 +12,11 @@ test('Case: Destination reached successfully.', async ({ page }) => {
     // Click the "Generate Route" button
     await page.locator('button:text("Generate Route")').click(),
 
-    // Click the "Done" button
-    await page.locator('button:text("Done")').click();
+    // Add waiting time
+    await page.waitForTimeout(3000); // waits for 3 seconds
+
+    // Click the "Back" button
+    await page.locator('#back_button').click();
 
     // Wait for some time to ensure all actions are completed
     await page.waitForTimeout(3000);
