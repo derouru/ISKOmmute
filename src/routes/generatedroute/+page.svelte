@@ -3,7 +3,14 @@
 </svelte:head>
 
 <button id="back_button" class="btn btn-xl variant-filled" on:click={handleClick}>&lt;</button>
+<div id="instructions">
+  <div id = "instructionswrapper">
+    <img id="walkingimg" src="src/lib/assets/walking-icon.svg" alt="walking-icon-free" width=30px, height=auto>
+    <div id="instructionupd"></div>
+  </div>
+</div>
 <div id="map" bind:this={mapElement}></div>
+
 <script>
 // - - - - - - - SVELTE ROUTE IMPORTS - - - - - - -
   import { goto } from "$app/navigation";
@@ -22,6 +29,14 @@
   // for use in generating route
   let start;
   let end;
+
+  // for use in displaying time + calculating ETA
+  const date = new Date();
+  let hours = date.getHours();
+  let ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12
+  hours = hours ? hours : 12;
+  let minutes = date.getMinutes();
 
 	startValue.subscribe((value) => {
 		startPoint = value;
@@ -186,7 +201,7 @@
   if (map.getSource('route')) {
     map.getSource('route').setData(geojson);
   }
-  // otherwise, we'll make a new request
+  // else, make new request
   else {
     map.addLayer({
       id: 'route',
@@ -214,11 +229,18 @@
                     '#c52020' //cool red
                 ]
             },
-
-
     });
   }
-}
+  // get the sidebar and add the instructions
+  const duration = Math.floor(data.duration*2 / 60);
+  const instructions = document.getElementById('instructionupd');
+  // use template literal to insert html + variables 
+  minutes = minutes + duration
+  // add an extra zero if minutes < 10 to keep the X:XX format
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  let time = hours + ":" + minutes + " " + ampm;
+  instructions.innerHTML = `<p><strong> ${duration} mins.</strong></p><p>ETA ${time}</p>`;
+  }
 
 // - - - - - - - SETUP MAP - - - - - - - 
 function createMap() {
@@ -330,7 +352,7 @@ function createMap() {
           'circle-stroke-opacity': 0.5
         }
     });
-  // CAN ADD MORE FEATURES UPON LOADING HERE
+    // CAN ADD MORE FEATURES UPON LOADING HERE
 
   });
   // - - - - - - - MAP ON LOAD END - - - - - - -  
@@ -418,7 +440,6 @@ function createMap() {
       const distance = earthRadius * c; // Distance in meters
       return distance;
     }
-
       
     // GET LOCATION FUNCTION
     async function getLocation(updateSource) {
@@ -475,5 +496,28 @@ function createMap() {
 		color: white;
     background-color: #9C293E;
     border-radius: 30%;
+  }
+  #instructionupd {
+    font-size: 0.9rem;
+  }
+  #instructionswrapper {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-align: center; 
+  }
+  #instructions {
+    position: absolute;
+    margin-top: 5%;
+    margin-left: 78vw;
+    color: white;
+    background-color: #9C293E;
+    padding: 1em;
+    border-radius: 15%;
+  }
+  @media (max-width: 720px) {
+  #instructions {
+    margin-left: 68vw;
+  }
   }
 </style>
