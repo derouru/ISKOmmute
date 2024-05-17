@@ -278,7 +278,7 @@ function createMap() {
     // ADD ENTRANCES AS A SOURCE
     map.addSource('entrances', {
         type: 'vector',
-        url: 'mapbox://jbvicerra.clv3l14h73n4a1trt1swv4nvo-9gs1p' //from campus tileset id
+        url: 'mapbox://jbvicerra.clv3l14h73n4a1trt1swv4nvo-8aok4' //from campus tileset id
     });
     map.addLayer({
         'id': 'entrancesLayer',
