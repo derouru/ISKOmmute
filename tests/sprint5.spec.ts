@@ -49,3 +49,24 @@ test('Case: More information on start and destination location was displayed suc
     await expect(page.getByText('Electrical and Electronics Engineering InstituteEEEI; It is an institution for')).toBeVisible();
     await page.getByLabel('Close popup').click();
 });
+
+test('Case: Commuting route was changed successfully', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('#select-start').selectOption('CAL');
+    await page.locator('#select-dest').selectOption('Church of the Risen Lord');
+    page.once('dialog', dialog => {
+      console.log(`Dialog message: ${dialog.message()}`);
+      dialog.dismiss().catch(() => {});
+    });
+    await page.getByRole('button', { name: 'Generate Route' }).click();
+    await page.waitForTimeout(5000);
+    await page.getByRole('button', { name: '<' }).click();
+    await page.locator('#select-start').selectOption('A2');
+    await page.locator('#select-dest').selectOption('Church of the Risen Lord');
+    page.once('dialog', dialog => {
+      console.log(`Dialog message: ${dialog.message()}`);
+      dialog.dismiss().catch(() => {});
+    });
+    await page.getByRole('button', { name: 'Generate Route' }).click();
+    await page.waitForTimeout(5000);
+  });
