@@ -33,10 +33,8 @@
   // for use in displaying time + calculating ETA
   const date = new Date();
   let hours = date.getHours();
-  let ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12
-  hours = hours ? hours : 12;
   let minutes = date.getMinutes();
+  let ampm = hours >= 12 ? 'pm' : 'am';
 
 	startValue.subscribe((value) => {
 		startPoint = value;
@@ -241,6 +239,19 @@
   const instructions = document.getElementById('instructionupd');
   // use template literal to insert html + variables 
   minutes = minutes + duration
+
+  // it's possible to go beyond 60 minutes once duration is added, so we need to check
+  // if minutes value is 60 or above
+  if (minutes >= 60){
+    //subtract minutes by 60 then add 1 to hours
+    minutes = minutes - 60;
+    hours = hours + 1
+  }
+  //check if am or pm
+  ampm = hours >= 12 ? 'pm' : 'am';
+  //fix hours display
+  hours = hours % 12
+  hours = hours ? hours : 12;
   // add an extra zero if minutes < 10 to keep the X:XX format
   minutes = minutes < 10 ? '0'+minutes : minutes;
   let time = hours + ":" + minutes + " " + ampm;
