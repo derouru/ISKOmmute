@@ -90,11 +90,11 @@
   // latitude: 14.649,
 
   // for setting max bounds when panning
-  /*const bounds = [
+  const bounds = [
         [121.03904653077666, 14.632427391768406], // SouthWest coordinates
         [121.07972257053247, 14.666687988622964] // NorthEast coordinates
-    ];
-  */
+  ];
+  
   
   // for pulsating dot
   const size = 200;
@@ -165,7 +165,7 @@
   };  
 
   function handleClick() {
-			window.alert('You have arrived at your destination.');
+			//window.alert('You have arrived at your destination.');
 			const url = `../`;
 			goto(url);
 
@@ -266,7 +266,7 @@ function createMap() {
     style: mapStyle,
     center: [viewState.longitude, viewState.latitude],
     zoom: viewState.zoom,
-    //maxBounds: bounds
+    maxBounds: bounds
   });
   // - - - - - - - ADD MAP LAYERS UPON LOADING - - - - - - - - - - - - - -  
   map.on('load', function() {
