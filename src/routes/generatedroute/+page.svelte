@@ -4,13 +4,14 @@
 <button id="back_button" class="btn btn-xl variant-filled" on:click={handleClick}> &lt; </button>
 <div id="instructions">
   <div id = "instructionswrapper">
-    <img id="walkingimg" src="src/lib/assets/walking-icon.svg" alt="walking-icon-free" width=30px, height=auto>
+    <img id="walkingimg" src={walkingMan} alt="walking-icon-free" width=30px, height=auto>
     <div id="instructionupd"></div>
   </div>
 </div>
 <div id="map" bind:this={mapElement}></div>
 
 <script>
+  import walkingMan from "$lib/assets/walking-icon.svg";
 // - - - - - - - SVELTE ROUTE IMPORTS - - - - - - -
   import { goto } from "$app/navigation";
 // - - - - - - - MAPBOX IMPORTS - - - - - - -
