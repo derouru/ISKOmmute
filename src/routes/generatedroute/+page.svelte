@@ -460,11 +460,11 @@ function createMap() {
             // FLY TO YOUR CURRENT POSITION
 
             // TEMPORARILY DISABLE FLYTOOOOOOO
-            //map.flyTo({
-            //    center: [longitude, latitude],
-            //    speed: 1,
-            //    zoom: 18.3
-            //});
+            map.flyTo({
+                center: [longitude, latitude],
+                speed: 1,
+                zoom: 18.3
+            });
 
             // RETURN YOUR CURRENT POSITION AS A GEOJSON
             return {
