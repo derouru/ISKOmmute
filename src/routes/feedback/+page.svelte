@@ -1,17 +1,45 @@
 <script>
-    async function handleSubmit(event) {
-        event.preventDefault();
+    let feedback = '';
+    let rating = 0; 
+    let lastRating = 0;
 
-        const formData = new FormData(event.target);
-        const response = await fetch(event.target.action, {
-            method: 'POST',
-            body: formData
-        });
-        
-        if (response.ok) {
-            window.alert('Thank you for your feedback!');
-            window.location.href = '/feedback';
+    function handleClick(event) {
+    const clickedRating = parseInt(event.target.value);
+
+    // Iterate through stars and turn them yellow up to the clicked star
+    const stars = document.querySelectorAll('.rating__label');
+    for (let i = stars.length - 1; i >= 0; i--) {
+        const star = stars[i];
+        if (parseInt(star.value) <= clickedRating) {
+            star.style.color = 'gold';
+        } else {
+            star.style.color = 'gray';
         }
+    }
+    //Update rating
+    rating = clickedRating;
+    lastRating = clickedRating;
+    }
+
+    function handleRatingChange(event) {
+    rating = parseInt(event.target.value);
+    }
+
+    function handleSubmit() {
+    if (!feedback && rating === 0) {
+        window.alert('Feedback cannot be empty.');
+    } else {
+        window.alert(`Thank you for your feedback! Your input is valuable to us.`);
+        const data = `Rating: ${rating} stars\nFeedback: ${feedback}\n`
+        const blob = new Blob([data], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'feedback.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
     }
 </script>
 
@@ -25,26 +53,22 @@
     <h1>Iskommute Feedback</h1>
     <p>We value your feedback! If you have any suggestions, questions, or encounter any issues while using Iskommute, please don't hesitate to contact us using the form below. Your input helps us improve Iskommute for everyone.</p>
 
-    <form 
-        id="my-form"
-        method="POST"
-        action="https://script.google.com/macros/s/AKfycbzSYJjfjw97jBC0lrmsfuDpWPXbpBhhtXV9oV6Pkp2U2Uiv1mgI4UU8S5ocNUG48MiG/exec"
-        on:submit={handleSubmit}>
-
-        <h2>Feedback Form</h2>
-        <p>Rate your experience:</p>
-        <div class="rating flex">
-            {#each [5, 4, 3, 2, 1] as number}
-                <input type="radio" id={`star${number}`} name="Rating" value={number} class="rating__input">
-                <label for={`star${number}`} class="rating__label">&#9733;</label>
-            {/each}
-        </div>
-        <p>Feedback:</p>
-        <div class = "flex justify-center items-center">
-            <textarea id="feedback-txtarea" name="Feedback" required></textarea>
-        </div>
-        <button type="submit" id="submitBtn" class="btn btn-xl variant-filled submit-feedback-btn">Submit</button>
-    </form>
+    <h2>Feedback Form</h2>
+    <p>Rate your experience:</p>
+    <div class="rating flex">
+        {#each [5, 4, 3, 2, 1] as number}
+            <input type="radio" id={`star${number}`} name="rating" value={number} class="rating__input" on:click={handleClick} on:change={handleRatingChange}>
+            <!-- <label for={`star${number}`} class="rating__label">&#9733;</label> -->
+            <button class="rating__label" id={`stars${number}`} value={number} on:click={handleClick}>&#9733;</button>
+        {/each}
+    </div>
+    <p>Feedback:</p>
+    <div class = "flex justify-center items-center">
+        <form class="w-full max-w-lg" on:submit|preventDefault={handleSubmit}>
+            <textarea id="feedback-txtarea" bind:value={feedback} required></textarea>
+        </form>
+    </div>
+    <button id="submitBtn" class="btn btn-xl variant-filled submit-feedback-btn" on:click={handleSubmit}>Submit</button>
 </div>
 
 <style>
@@ -66,8 +90,8 @@
     direction: rtl;
     }
 
-    .rating__input:checked ~ .rating__label {
-        color: gold;
+    .rating__input {
+    display: none;
     }
 
     .rating__label {
