@@ -4,7 +4,7 @@
 <button id="back_button" class="btn btn-xl variant-filled" on:click={handleClick}> &lt; </button>
 <div id="instructions">
   <div id = "instructionswrapper">
-    <img id="walkingimg" src="src/lib/assets/walking-icon.svg" alt="walking-icon-free" width=30px, height=auto>
+    <img id="walkingimg" src="$lib/assets/walking-icon.svg" alt="walking-icon-free" width=30px, height=auto>
     <div id="instructionupd"></div>
   </div>
 </div>
@@ -21,6 +21,7 @@
   //import endPlace from "../+page.svelte";
   import { startValue } from '$lib/stores';
   import { endValue } from '$lib/stores';
+  import { coordinate } from '$lib/coords.js';
 
   // for use in subscribing to start, end store values
   let startPoint;
@@ -45,33 +46,9 @@
 	});
   // - - - - - - - DETERMINE START AND END BASED ON STRING VALUES FROM DROPDOWN MENU - - - - - - -
   // Can improve on this by storing longitude and latitude data to somewhere, instead of direct hardcoding
-  if (startPoint === 'AECH') {
-     start = [ 121.068689757108132, 14.648708168263134 ];
-  } else if (startPoint === 'CSLib') {
-     start =  [121.069113351711948, 14.649259614804413];
-  } else if (startPoint === 'EEEI') {
-     start = [ 121.068357398535895, 14.649567867969143 ];
-  } else if (startPoint === 'IMath') {
-     start = [ 121.070964437966168, 14.648304820957335 ];
-  } else if (startPoint === 'IESM') {
-     start = [ 121.070083790064402, 14.648249523277556 ];
-  } else if (startPoint === 'NIGS') {
-     start = [ 121.069456352161723, 14.648350367516176 ]; 
-  }
+  start = coordinate[startPoint];
+  end = coordinate[endPoint];
 
-  if (endPoint === 'AECH') {
-     end = [ 121.068689757108132, 14.648708168263134 ];
-  } else if (endPoint === 'CSLib') {
-     end =  [121.069113351711948, 14.649259614804413];
-  } else if (endPoint === 'EEEI') {
-     end = [ 121.068357398535895, 14.649567867969143 ];
-  } else if (endPoint === 'IMath') {
-     end = [ 121.070964437966168, 14.648304820957335 ];
-  } else if (endPoint === 'IESM') {
-     end = [ 121.070083790064402, 14.648249523277556 ];
-  } else if (endPoint === 'NIGS') {
-     end = [ 121.069456352161723, 14.648350367516176 ]; 
-  }
   //- - - - - SETUP MAP PROPERTIES - - - - - - - - - - - - - -  
   //start = [ 121.068689757108132, 14.648708168263134 ];  //TRY DEFINING ARBITRARY START POINT FOR NAVIGATION
   //end = [ 121.070964437966168, 14.648304820957335 ]; //TRY DEFINING ARBITRARY END POINT FOR NAVIGATION
