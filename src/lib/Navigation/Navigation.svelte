@@ -10,7 +10,7 @@
 
     const links_lst = [
         ['/', 'Home'],
-        ['/settings', 'Settings'],
+        //['/settings', 'Settings'],
         ['/tos', 'Terms of Service'],
         ['/privacypolicy', 'Privacy Policy'],
         ['/help', 'Help'],
