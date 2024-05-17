@@ -2,21 +2,13 @@
 	import { goto } from "$app/navigation";
 	import { startValue } from '$lib/stores';
   	import { endValue } from '$lib/stores';
+	import { options } from '$lib/dropdownoptions.js'
 
 	let startPlaceHolder = 'Choose starting point...';
 	let endPlaceHolder = 'Choose destination...';
 
 	let startPlace = '';
 	let endPlace = '';
-
-	let options = [
-		{ value: "AECH", label: "Alumni Engineers Centennial Hall" },
-		{ value: "CSLib", label: "College of Science Library"},
-		{ value: "EEEI", label: "Electrical and Electronics Engineering Institute"},
-		{ value: "IMath", label: "Institute of Mathematics" },
-		{ value: "IESM", label: "Institute of Environmental Science and Meterology" },
-		{ value: "NIGS", label: "National Institute of Geological Sciences" }
-	]
 
 	function handleClick() {
 		if (!startPlace || !endPlace) {
