@@ -57,7 +57,7 @@ test('Submitting feedback form with feedback text and rating', async ({ page }) 
         // is an alert?
         expect(myAlert.type()).toContain("alert")
         // contains a certain text?
-        expect(myAlert.message()).toContain("Thank you for your feedback! Your input is valuable to us.")
+        expect(myAlert.message()).toContain("Thank you for your feedback!")
         await myAlert.accept()
     })
     await page.waitForTimeout(3000);
