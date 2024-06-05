@@ -46,7 +46,7 @@ test('Submitting feedback form with feedback text and rating', async ({ page }) 
 
     // Fill in the textarea input with text
     await page.fill('#feedback-txtarea', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
-    await page.click('#stars5');
+    await page.click('#star5');
     
     // Submit the form
     await page.click('#submitBtn');
