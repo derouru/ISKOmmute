@@ -420,14 +420,14 @@ function createMap() {
         const geojson = await getLocation(updateSource);
         map.getSource('myPosition').setData(geojson);
 
-        // CHECK IF CURRENT POSITION IS < 5 METERS FROM DESTINATION
+        // CHECK IF CURRENT POSITION IS < 10 METERS FROM DESTINATION
         const myPosition = await getCurrentPosition();
         const { latitude, longitude } = myPosition.coords;
 
         const distance = getDistance(latitude, longitude, end[1], end[0]);
-        // IF DISTANCE < 5, YOU HAVE ARRIVE AT YOUR DESTINATION
+        // IF DISTANCE < 10, YOU HAVE ARRIVE AT YOUR DESTINATION
         // GOTO MAIN PAGE
-        if (distance < 5) {
+        if (distance < 10) {
           window.alert('You have arrived at your destination.');
 			    const url = `../`;
 			    goto(url);
